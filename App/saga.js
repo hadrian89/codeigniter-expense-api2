@@ -159,12 +159,55 @@ function* addCard() {
   }
 }
 
+function* updateCard() {
+  const token = yield select(makeSelectToken());
+  const userid = yield select(makeSelectUserId());
+  const form_card_no = yield select(makeSelectCardNo());
+  const form_card_bank = yield select(makeSelectCardBank());
+  const form_card_limit = yield select(makeSelectCardLimit());
+
+  const requestURL = API_URL + "/api/CreditCard/updatecard";
+  const params = {
+    bank_name:form_card_bank,
+    card_number:form_card_no,
+    credit_limit:form_card_limit,
+    available_limit:form_card_limit,
+    status:'1'
+  };
+  // const params = {
+  //   userid: "1", //userid,
+  //   bank_name:"ICICI",
+  //   card_number:"766666666666",
+  //   credit_limit:"100000",
+  //   available_limit:"999999",
+  //   status:'1'
+  // };
+
+  const tokens = "Bearer ".concat(token);
+  const headers = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: tokens
+    },
+    body:  JSON.stringify(params)
+  };
+
+  try {
+    // Call our request helper (see 'utils/request')
+    const resp = yield call(request, requestURL, headers);
+    yield put(addCardSuccess(resp));
+  } catch (err) {
+    yield put(addCardFailed(err));
+  }
+}
+
 function* dataSaga() {
   yield takeEvery(GET_TOKEN, fetchToken);
   yield takeEvery(GET_USERID, fetchUserId);
   yield takeEvery(GET_CARD_LIST, fetchCardList);
   yield takeEvery(ADD_NEW_CARD, addCard);
-  //yield takeEvery(UPDATE_CARD, updateCard);
+  yield takeEvery(UPDATE_CARD, updateCard);
 }
 
 export default dataSaga;

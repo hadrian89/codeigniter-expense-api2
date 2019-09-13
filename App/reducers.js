@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import dashboardReducer from "./Containers/Dashboard/reducers";
 import creditcardReducer from "./Containers/CreditCard/reducers";
 import createSagaMiddleware from "redux-saga";
+import { reducer as formReducer } from 'redux-form';
 
 import appSaga from "./saga";
 const sagaMiddleware = createSagaMiddleware();
@@ -9,6 +10,7 @@ const sagaMiddleware = createSagaMiddleware();
 const rootReducer = combineReducers({
   dashboard: dashboardReducer,
   creditcard: creditcardReducer,
+  form: formReducer,
 });
 
 export default function configureStore() {

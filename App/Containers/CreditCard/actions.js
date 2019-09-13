@@ -58,6 +58,8 @@ export const addCardFailed = error => {
 };
 
 export const updateCard = cardid => {
+  
+  console.log(cardid, "cardidAct");
   return {
     type: UPDATE_CARD,
     cardid

@@ -25,7 +25,8 @@ export const initialState = fromJS({
   error: false,
   formCardNo: '',
   formCardBank: '',
-  formCardLimit: ''
+  formCardLimit: '',
+  cardid:false
 });
 
 const creditcardReducer = (state = initialState, action) => {
@@ -71,6 +72,11 @@ const creditcardReducer = (state = initialState, action) => {
         ...state,
         error: action.error
       };
+    // case UPDATE_CARD:
+    //   return {
+    //     ...state,
+    //     cardid: action.cardid
+    //   };
     case UPDATE_CARD_SUCCESS:
       return {
         ...state,
