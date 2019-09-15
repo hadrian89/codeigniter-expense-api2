@@ -221,7 +221,7 @@ class AddCreditCard extends React.Component {
       );
     }
     return (
-      <ScrollView>
+      // <ScrollView>
         <ImageBackground source={remote} style={styles.backgroundImage}>
           <View style={[styles.container]}>
             {/* {loading && (
@@ -290,7 +290,7 @@ class AddCreditCard extends React.Component {
             <View style={[styles.buttonContainer]}>{removeHtml}</View>
           </View>
         </ImageBackground>
-      </ScrollView>
+      // </ScrollView>
     );
   }
 }

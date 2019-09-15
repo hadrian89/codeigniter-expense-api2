@@ -3,19 +3,20 @@ import {
   LOGIN_SUCCEEDED,
   LOGIN_FAILED,
   GET_USERID_SUCCEEDED,
-  GET_USERID_FAILED
+  GET_USERID_FAILED,
+  ACTION_LOGOUT
 } from "./constants";
 
 import { fromJS } from "immutable";
 
 export const initialState = fromJS({
-  token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6ImFiaGluYXYiLCJpYXQiOjE1Njg1NTY2OTAsImV4cCI6MTU2ODU3NDY5MH0.COL7dHwb5UIRC1zsw4vTPl22sdnhsYFjwnJKfOho1_8',//false,
+  token: false,
   error: false,
   username: false,
   password: false,
-  userid: '1',//false,
+  userid: false,
   userdetail: false,
-  loading:false,
+  loading: false
 });
 
 const dashboardReducer = (state = initialState, action) => {
@@ -25,7 +26,7 @@ const dashboardReducer = (state = initialState, action) => {
         ...state,
         username: action.username,
         password: action.password,
-        loading:true
+        loading: true
       };
     case LOGIN_SUCCEEDED:
       return {
@@ -42,13 +43,24 @@ const dashboardReducer = (state = initialState, action) => {
         ...state,
         userid: action.userid,
         userdetail: action.userdetail,
-        loading:false
+        loading: false
       };
     case GET_USERID_FAILED:
       return {
         ...state,
         error: action.error,
-        loading:false
+        loading: false
+      };
+    case ACTION_LOGOUT:
+      return {
+        ...state,
+        token: false,
+        error: false,
+        username: false,
+        password: false,
+        userid: false,
+        userdetail: false,
+        loading: false
       };
     default:
       return state;

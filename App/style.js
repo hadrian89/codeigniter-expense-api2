@@ -5,7 +5,6 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center"
-    // backgroundColor: '#DCDCDC',
   },
   backgroundImage: { width: "100%", height: "100%" },
   inputItem: {
@@ -80,17 +79,10 @@ export default StyleSheet.create({
     borderBottomColor: "#FFFFFF",
     flex: 1,
     padding: 10,
-    // height: 45,
+    width:200,
     borderWidth: 0,
-    // marginLeft: 10,
-    // marginRight: 10,
-    // // borderBottomWidth:1,
-    // //fontSize: 16,
-    // color: "rgb(0, 0, 0)",
     alignSelf: "stretch",
-    // borderColor: "black"
   },
-  // inputItem: { marginTop: 10 },
   inputErr: { color: "red", marginLeft: 10,position:'absolute',bottom:-20 },
   buttonPrimary: {
     marginTop: 10,

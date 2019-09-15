@@ -4,8 +4,15 @@ import {
   LOGIN_FAILED,
   GET_USERID,
   GET_USERID_SUCCEEDED,
-  GET_USERID_FAILED
+  GET_USERID_FAILED,
+  ACTION_LOGOUT
 } from "./constants";
+
+export const actionLogout = () => {
+  return {
+    type: ACTION_LOGOUT,
+  };
+};
 
 export const actionLogin = (username, password) => {
   return {

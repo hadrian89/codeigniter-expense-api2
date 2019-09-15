@@ -1,3 +1,4 @@
+export const ACTION_LOGOUT = 'ACTION_LOGOUT'
 export const ACTION_LOGIN = 'ACTION_LOGIN'
 export const LOGIN_SUCCEEDED = 'LOGIN_SUCCEEDED'
 export const LOGIN_FAILED = 'LOGIN_FAILED'

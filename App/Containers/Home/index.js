@@ -10,7 +10,7 @@ class HomeScreen extends React.Component {
   render() {
     if (
       typeof this.props.token != "undefined" &&
-      typeof this.props.userid != "undefined"
+      typeof this.props.userid != "undefined" && this.props.token && this.props.userid
     ) {
       return <AppNavigator />;
     } else {
