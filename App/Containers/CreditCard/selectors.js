@@ -27,10 +27,23 @@ const makeSelectCardLimit = () =>
     creditCardState => creditCardState.formCardLimit
   );
 
+const makeSelectCardSuccessResp = () =>
+  createSelector(
+    selectCreditCard,
+    creditCardState => creditCardState.response
+  );
+const makeSelectCardErrorResp = () =>
+  createSelector(
+    selectCreditCard,
+    creditCardState => creditCardState.error
+  );
+
 export {
   selectCreditCard,
   makeSelectCardList,
   makeSelectCardNo,
   makeSelectCardBank,
-  makeSelectCardLimit
+  makeSelectCardLimit,
+  makeSelectCardSuccessResp,
+  makeSelectCardErrorResp
 };

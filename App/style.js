@@ -1,19 +1,106 @@
-import React, { StyleSheet } from 'react-native'
-import { colors, fonts } from './theme'
+import React, { StyleSheet } from "react-native";
+import { colors, fonts } from "./theme";
 export default StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 40
+    justifyContent: "center",
+    alignItems: "center"
+    // backgroundColor: '#DCDCDC',
   },
-  select:{
+  backgroundImage: { width: "100%", height: "100%" },
+  inputItem: {
+    borderBottomColor: "#F5FCFF",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 30,
+    borderBottomWidth: 1,
+    width: 250,
     height: 45,
+    marginBottom: 20,
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  modalBackground: {
+    position:'absolute',
+    zIndex:999,
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+  },
+  activityLoading: {
+    backgroundColor: '#00000040',
+    height: 100,
+    width: 100,
+    borderRadius: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
+  loginRegText:{
+    fontSize:25,
+    paddingBottom:10,
+    color:'white'
+  },
+  loginRegSubText:{
+    fontSize:18,
+    paddingBottom:20,
+    color:'white'
+  },
+  input: {
+    height: 45,
+    marginLeft: 16,
+    borderBottomColor: "#FFFFFF",
+    flex: 1,
+    padding: 13
+  },
+  inputIcon: {
+    width: 30,
+    height: 30,
+    marginLeft: 15,
+    justifyContent: "center"
+  },
+  buttonContainer: {
+    height: 45,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+    // width:250,
+    borderRadius: 30
+  },
+  loginButton: {
+    backgroundColor: "#00b5ec"
+  },
+  loginText: {
+    color: "white"
+  },
+  select: {
+    height: 45,
+    marginLeft: 16,
+    borderBottomColor: "#FFFFFF",
+    flex: 1,
+    padding: 10,
+    // height: 45,
     borderWidth: 0,
-    marginLeft:10,
-    marginRight:10,
-    borderBottomWidth:1,
-    //fontSize: 16,
-    color:'rgb(0, 0, 0)',
-    alignSelf: 'stretch',
+    // marginLeft: 10,
+    // marginRight: 10,
+    // // borderBottomWidth:1,
+    // //fontSize: 16,
+    // color: "rgb(0, 0, 0)",
+    alignSelf: "stretch",
+    // borderColor: "black"
+  },
+  // inputItem: { marginTop: 10 },
+  inputErr: { color: "red", marginLeft: 10,position:'absolute',bottom:-20 },
+  buttonPrimary: {
+    marginTop: 10,
+    marginRight: 10,
+    marginLeft: 10
+  },
+  buttonDanger: {
+    marginTop: 10,
+    marginRight: 10,
+    marginLeft: 10,
+    backgroundColor: "red"
   }
-})
+});

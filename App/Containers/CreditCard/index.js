@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 
-import { ListItem, withTheme } from "react-native-elements";
+import { ListItem, withTheme, ThemeProvider } from "react-native-elements";
 import { createStructuredSelector } from "reselect";
 import { getCard } from "./actions";
 import { makeSelectCardList } from "./selectors";
@@ -39,13 +39,16 @@ class CreditCardList extends React.Component {
         allcards.cards.map(function(v, k) {
           if (v.id === id) {
             // carddetail.push(v);
-            carddetail=v;
+            carddetail = v;
           }
         });
       }
     }
     this.props.navigation.navigate("CreditCardForm", { cardid: carddetail });
   }
+  // updateTheme(){
+  //   updateTheme({ colors: { primary: 'red' } });
+  // };
 
   render() {
     let cards_image = [];
@@ -71,9 +74,7 @@ class CreditCardList extends React.Component {
           cards_image.push({
             id: v.id,
             name: v.bank_name + " (" + v.card_number + ")",
-            // avatar_url: require("../../../assets/images/" +
-            //   v.bank_name.toLowerCase() +
-            //   ".jpg"),
+            //avatar_url: require("../../../assets/images/" .concat(v.bank_name.toLowerCase()).concat(".jpg")),
             subtitle: "Limit Left: " + v.credit_limit
           });
         });
@@ -90,30 +91,39 @@ class CreditCardList extends React.Component {
 
     const SafeTouchableHighlight =
       Platform.OS === "web" ? WebTouchableHighlight : TouchableHighlight;
+    // const theme = {
+    //   Button: {
+    //     raised: true,
+    //   },
+    // };
 
+    const { theme, updateTheme } = this.props;
+    // updateTheme({ colors: { primary: 'red' } });
     return (
-      <ScrollView>
-        <Button
-          block
-          title="Add Credit Card"
-          onPress={() => this.props.navigation.navigate("CreditCardForm")}
-          success
-        >
-          <Text> Add Credit Cards </Text>
-        </Button>
-        {cards_image.map((l, i) => (
-          <ListItem
-            key={i}
-            title={l.name}
-            //leftAvatar={{ source: { uri: l.avatar_url } }}
-            subtitle={l.subtitle}
-            bottomDivider
-            button
-            onPress={() => this.editCard(l.id)}
-            Component={SafeTouchableHighlight}
-          />
-        ))}
-      </ScrollView>
+      <ThemeProvider theme={theme} updateTheme={updateTheme}>
+        <ScrollView>
+          <Button
+            block
+            title="Add Credit Card"
+            onPress={() => this.props.navigation.navigate("CreditCardForm")}
+            success
+          >
+            <Text> Add Credit Cards </Text>
+          </Button>
+          {cards_image.map((l, i) => (
+            <ListItem
+              key={i}
+              title={l.name}
+              //leftAvatar={{ source: { uri: l.avatar_url } }}
+              subtitle={l.subtitle}
+              bottomDivider
+              button
+              onPress={() => this.editCard(l.id)}
+              Component={SafeTouchableHighlight}
+            />
+          ))}
+        </ScrollView>
+      </ThemeProvider>
     );
   }
 }

@@ -1,35 +1,43 @@
-import { GET_TOKEN, GET_USERID } from "./Containers/Dashboard/constants";
+import request from "./utils/request";
+// import { GET_TOKEN } from "./Containers/Dashboard/constants";
+import { ACTION_LOGIN, GET_USERID } from "./Containers/Login/constants";
+import { ACTION_REGISTER } from "./Containers/Registration/constants";
 import {
   GET_CARD_LIST,
   ADD_NEW_CARD,
-  UPDATE_CARD
+  UPDATE_CARD,
+  REMOVE_CARD
 } from "./Containers/CreditCard/constants";
 
 import { call, put, select, takeEvery } from "redux-saga/effects";
-import {
-  tokenLoaded,
-  tokenLoadingError,
-  getUserIdLoaded,
-  getUserIdError
-} from "./Containers/Dashboard/actions";
+import // tokenLoaded,
+// tokenLoadingError,
+// getUserIdLoaded,
+// getUserIdError
+"./Containers/Dashboard/actions";
 import {
   getCardSuccess,
   getCardFailed,
   addCardSuccess,
-  addCardFailed
+  addCardFailed,
+  removeCardSuccess,
+  removeCardFailed
 } from "./Containers/CreditCard/actions";
+import {
+  loginSuccess,
+  loginError,
+  getUserIdLoaded,
+  getUserIdError
+} from "./Containers/Login/actions";
+import{
+  registerSuccess,
+  registerError
+} from "./Containers/Registration/actions";
 
-import request from "./utils/request";
 import {
   makeSelectToken,
   makeSelectUserId
-} from "./Containers/Dashboard/selectors";
-
-import{
-  makeSelectCardNo,
-  makeSelectCardBank,
-  makeSelectCardLimit
-} from "./Containers/CreditCard/selectors";
+} from "./Containers/Login/selectors";
 
 const API_URL = "http://weblybox.com/ci-rest-jwt";
 
@@ -50,9 +58,34 @@ function* fetchToken(action) {
   try {
     // Call our request helper (see 'utils/request')
     const resp = yield call(request, requestURL, headers);
-    yield put(tokenLoaded(resp.token, params.username));
+    yield put(loginSuccess(resp.token, params.username));
   } catch (err) {
-    yield put(tokenLoadingError(err));
+    yield put(loginError(err));
+  }
+}
+
+function* registration(action) {
+
+  const requestURL = API_URL + "/api/auth/registration";
+  const params = {
+    username: action.username,
+    password: action.password,
+    email: action.phone,
+  };
+  const headers = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(params)
+  };
+
+  try {
+    // Call our request helper (see 'utils/request')
+    const resp = yield call(request, requestURL, headers);
+    yield put(registerSuccess(resp.userid, params.username));
+  } catch (err) {
+    yield put(registerError(err));
   }
 }
 
@@ -89,7 +122,7 @@ function* fetchCardList() {
 
   const requestURL = API_URL + "/api/CreditCard/getcard";
   const params = {
-    userid: "1" //userid
+    userid: userid
   };
 
   const tokens = "Bearer ".concat(token);
@@ -111,34 +144,19 @@ function* fetchCardList() {
   }
 }
 
-function* addCard() {
+function* addCard(prm) {
   const token = yield select(makeSelectToken());
   const userid = yield select(makeSelectUserId());
-  const form_card_no = yield select(makeSelectCardNo());
-  const form_card_bank = yield select(makeSelectCardBank());
-  const form_card_limit = yield select(makeSelectCardLimit());
 
-
-  
   const requestURL = API_URL + "/api/CreditCard/addcard";
   const params = {
-    userid: "1", //userid,
-    bank_name:form_card_bank,
-    card_number:form_card_no,
-    credit_limit:form_card_limit,
-    available_limit:form_card_limit,
-    status:'1'
+    userid: userid,
+    bank_name: prm.formdata.form_cc_bank,
+    card_number: prm.formdata.form_cc_no,
+    credit_limit: prm.formdata.form_cc_limit,
+    available_limit: prm.formdata.form_cc_available_limit,
+    status: "1"
   };
-  // const params = {
-  //   userid: "1", //userid,
-  //   bank_name:"ICICI",
-  //   card_number:"766666666666",
-  //   credit_limit:"100000",
-  //   available_limit:"999999",
-  //   status:'1'
-  // };
-
-
 
   const tokens = "Bearer ".concat(token);
   const headers = {
@@ -147,41 +165,32 @@ function* addCard() {
       "Content-Type": "application/json",
       Authorization: tokens
     },
-    body:  JSON.stringify(params)
+    body: JSON.stringify(params)
   };
 
   try {
     // Call our request helper (see 'utils/request')
     const resp = yield call(request, requestURL, headers);
-    yield put(addCardSuccess(resp));
+    yield put(addCardSuccess("New Card Added"));
   } catch (err) {
     yield put(addCardFailed(err));
   }
 }
 
-function* updateCard() {
+function* updateCard(prm) {
   const token = yield select(makeSelectToken());
   const userid = yield select(makeSelectUserId());
-  const form_card_no = yield select(makeSelectCardNo());
-  const form_card_bank = yield select(makeSelectCardBank());
-  const form_card_limit = yield select(makeSelectCardLimit());
 
   const requestURL = API_URL + "/api/CreditCard/updatecard";
   const params = {
-    bank_name:form_card_bank,
-    card_number:form_card_no,
-    credit_limit:form_card_limit,
-    available_limit:form_card_limit,
-    status:'1'
+    cardid: prm.cardid,
+    userid: userid,
+    bank_name: prm.formdata.form_cc_bank,
+    card_number: prm.formdata.form_cc_no,
+    credit_limit: prm.formdata.form_cc_limit,
+    available_limit: prm.formdata.form_cc_available_limit,
+    status: "1"
   };
-  // const params = {
-  //   userid: "1", //userid,
-  //   bank_name:"ICICI",
-  //   card_number:"766666666666",
-  //   credit_limit:"100000",
-  //   available_limit:"999999",
-  //   status:'1'
-  // };
 
   const tokens = "Bearer ".concat(token);
   const headers = {
@@ -190,24 +199,56 @@ function* updateCard() {
       "Content-Type": "application/json",
       Authorization: tokens
     },
-    body:  JSON.stringify(params)
+    body: JSON.stringify(params)
   };
 
   try {
     // Call our request helper (see 'utils/request')
     const resp = yield call(request, requestURL, headers);
-    yield put(addCardSuccess(resp));
+    yield put(addCardSuccess("Card Updated"));
   } catch (err) {
     yield put(addCardFailed(err));
+  }
+}
+
+function* removeCard(prm) {
+  const token = yield select(makeSelectToken());
+  const userid = yield select(makeSelectUserId());
+
+  const requestURL = API_URL + "/api/CreditCard/deletecard";
+  const params = {
+    cardid: prm.cardid,
+    userid: userid
+  };
+
+  const tokens = "Bearer ".concat(token);
+  const headers = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: tokens
+    },
+    body: JSON.stringify(params)
+  };
+
+  try {
+    // Call our request helper (see 'utils/request')
+    const resp = yield call(request, requestURL, headers);
+    yield put(removeCardSuccess("Card Removed"));
+  } catch (err) {
+    yield put(removeCardFailed(err));
   }
 }
 
 function* dataSaga() {
-  yield takeEvery(GET_TOKEN, fetchToken);
+  // yield takeEvery(GET_TOKEN, fetchToken);
+  yield takeEvery(ACTION_LOGIN, fetchToken);
+  yield takeEvery(ACTION_REGISTER, registration);
   yield takeEvery(GET_USERID, fetchUserId);
   yield takeEvery(GET_CARD_LIST, fetchCardList);
   yield takeEvery(ADD_NEW_CARD, addCard);
   yield takeEvery(UPDATE_CARD, updateCard);
+  yield takeEvery(REMOVE_CARD, removeCard);
 }
 
 export default dataSaga;

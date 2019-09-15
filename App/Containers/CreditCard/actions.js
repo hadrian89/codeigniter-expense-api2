@@ -37,16 +37,17 @@ export const getCardFailed = error => {
   };
 };
 
-export const addCard = () => {
+export const addCard = formdata => {
   return {
-    type: ADD_NEW_CARD
+    type: ADD_NEW_CARD,
+    formdata
   };
 };
 
-export const addCardSuccess = success => {
+export const addCardSuccess = response => {
   return {
     type: ADD_NEW_CARD_SUCCESS,
-    success
+    response
   };
 };
 
@@ -57,12 +58,11 @@ export const addCardFailed = error => {
   };
 };
 
-export const updateCard = cardid => {
-  
-  console.log(cardid, "cardidAct");
+export const updateCard = (cardid, formdata) => {
   return {
     type: UPDATE_CARD,
-    cardid
+    cardid,
+    formdata
   };
 };
 
@@ -101,21 +101,21 @@ export const removeCardFailed = error => {
   };
 };
 
-export const changeCardNo = (formCardNo) => {
+export const changeCardNo = formCardNo => {
   return {
     type: FORM_CHANGE_CARD_NO,
     formCardNo
   };
 };
 
-export const changeCardBank = (formCardBank) => {
+export const changeCardBank = formCardBank => {
   return {
     type: FORM_CHANGE_CARD_BANK,
     formCardBank
   };
 };
 
-export const changeCardLimit = (formCardLimit) => {
+export const changeCardLimit = formCardLimit => {
   return {
     type: FORM_CHANGE_CARD_LIMIT,
     formCardLimit

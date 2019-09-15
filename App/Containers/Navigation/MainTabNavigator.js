@@ -7,8 +7,10 @@ import {
 
 import TabBarIcon from "./TabBarIcon";
 
-import RegistrationScreen from "../Registration/RegistrationScreen";
-import LoginScreen from "../Login/LoginScreen";
+import SavingsScreen from "../Savings/index";
+import ProfileScreen from "../Profile/index";
+import EMIScreen from "../EMI/index";
+import CCBillScreen from "../CreditCardBill/index";
 
 import Dashboard from "../Dashboard/index";
 import CreditCardList from "../CreditCard/index";
@@ -18,53 +20,91 @@ const config = Platform.select({
   web: { headerMode: "screen" }
 });
 
-const LoginStack = createStackNavigator(
+const CCBillStack = createStackNavigator(
   {
-    Login: LoginScreen
+    CCBill: CCBillScreen
   },
   config
 );
 
-LoginStack.navigationOptions = {
-  tabBarLabel: "Login",
+CCBillStack.navigationOptions = {
+  tabBarLabel: "CCBill",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? "ios-link" : "calculator"}
+    />
+  )
+};
+
+CCBillStack.path = "";
+
+const EMIStack = createStackNavigator(
+  {
+    EMI: EMIScreen
+  },
+  config
+);
+
+EMIStack.navigationOptions = {
+  tabBarLabel: "EMI",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? "ios-link" : "credit-card"}
+    />
+  )
+};
+
+EMIStack.path = "";
+
+const ProfileStack = createStackNavigator(
+  {
+    Profile: ProfileScreen
+  },
+  config
+);
+
+ProfileStack.navigationOptions = {
+  tabBarLabel: "Profile",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={
         Platform.OS === "ios"
           ? `ios-information-circle${focused ? "" : "-outline"}`
-          : "md-information-circle"
+          : "add-user"
       }
     />
   )
 };
 
-LoginStack.path = "";
+ProfileStack.path = "";
 
-const RegistrationStack = createStackNavigator(
+const SavingsStack = createStackNavigator(
   {
-    Registration: RegistrationScreen
+    Savings: SavingsScreen
   },
   config
 );
 
-RegistrationStack.navigationOptions = {
-  tabBarLabel: "Registration",
+SavingsStack.navigationOptions = {
+  tabBarLabel: "Savings",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
+      name={Platform.OS === "ios" ? "ios-link" : "grid"}
     />
   )
 };
 
-RegistrationStack.path = "";
+SavingsStack.path = "";
 
 const DashboardStack = createStackNavigator(
   {
     Dashboard: Dashboard,
     CreditCardList: CreditCardList,
-    CreditCardForm: CreditCardForm,
+    CreditCardForm: CreditCardForm
   },
   config
 );
@@ -74,7 +114,7 @@ DashboardStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
+      name={Platform.OS === "ios" ? "ios-link" : "area-graph"}
     />
   )
 };
@@ -83,8 +123,10 @@ DashboardStack.path = "";
 
 const tabNavigator = createBottomTabNavigator({
   DashboardStack,
-  LoginStack,
-  RegistrationStack
+  SavingsStack,
+  EMIStack,
+  CCBillStack,
+  ProfileStack,
 });
 
 tabNavigator.path = "";

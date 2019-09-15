@@ -2,7 +2,7 @@ import { AppLoading } from "expo";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { Platform, StatusBar, StyleSheet, View } from "react-native";
+import { Platform, StatusBar, StyleSheet, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import { Provider } from "react-redux";
@@ -11,6 +11,10 @@ const store = configureStore();
 
 // import AppNavigator from './navigation/AppNavigator';
 import AppNavigator from "./App/Containers/Navigation/AppNavigator";
+import AppNavigators from "./App/Containers/Navigation/AppNavigators";
+import HomeScreen from "./App/Containers/Home/index";
+
+import { isSignedIn, onSignIn } from "./App/auth";
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -27,14 +31,61 @@ export default function App(props) {
     return (
       <View style={styles.container}>
         {Platform.OS === "ios" && <StatusBar barStyle="default" />}
-        {/* <AppNavigator /> */}
         <Provider store={store}>
-          <AppNavigator />
+          <HomeScreen />
         </Provider>
       </View>
     );
   }
 }
+
+// export default class App extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       signedIn: false,
+//       checkedSignIn: false
+//     };
+//   }
+
+//   componentDidMount() {
+//     isSignedIn()
+//       .then(res => this.setState({ signedIn: res, checkedSignIn: true }))
+//       .catch(err => alert("An error occurred"));
+
+//       console.log(onSignIn,'onSignIn')
+//   }
+
+//   render() {
+//     const { checkedSignIn, signedIn } = this.state;
+
+//     // If we haven't checked AsyncStorage yet, don't render anything (better ways to do this)
+//     if (!checkedSignIn) {
+//       return null;
+//     }
+
+//     if (!signedIn) {
+//       return (
+//         <View style={styles.container}>
+//           {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+//           {/* <AppNavigator /> */}
+//           <Provider store={store}>
+//             <AppNavigators />
+//           </Provider>
+//         </View>
+//       );
+//     } else {
+//       return (
+//         <View style={styles.container}>
+//           {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+//           <Provider store={store}>
+//             <AppNavigator />
+//           </Provider>
+//         </View>
+//       );
+//     }
+//   }
+// }
 
 async function loadResourcesAsync() {
   await Promise.all([

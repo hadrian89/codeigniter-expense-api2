@@ -4,36 +4,43 @@
 
 import { createSelector } from "reselect";
 
-const selectDashboard = state => state.dashboard;
+const selectLogin = state => state.login;
 
 const makeSelectUsername = () =>
   createSelector(
-    selectDashboard,
+    selectLogin,
     dashboardState => dashboardState.username
   );
 
 const makeSelectUserDetail = () =>
   createSelector(
-    selectDashboard,
+    selectLogin,
     dashboardState => dashboardState.userdetail
   );
 
 const makeSelectUserId = () =>
   createSelector(
-    selectDashboard,
+    selectLogin,
     dashboardState => dashboardState.userid
   );
 
 const makeSelectToken = () =>
   createSelector(
-    selectDashboard,
+    selectLogin,
     dashboardState => dashboardState.token
   );
 
+const makeSelectLoginLoading = () =>
+  createSelector(
+    selectLogin,
+    dashboardState => dashboardState.loading
+  );
+
 export {
-  selectDashboard,
+  selectLogin,
   makeSelectUsername,
   makeSelectToken,
   makeSelectUserDetail,
-  makeSelectUserId
+  makeSelectUserId,
+  makeSelectLoginLoading
 };
