@@ -7,12 +7,15 @@ import {
 
 import TabBarIcon from "./TabBarIcon";
 
-import SavingsScreen from "../Savings/index";
-import ProfileScreen from "../Profile/index";
-import EMIScreen from "../EMI/index";
-import CCBillScreen from "../CreditCardBill/index";
-
 import Dashboard from "../Dashboard/index";
+// import SavingsScreen from "../Savings/index";
+import ProfileScreen from "../Profile/index";
+
+import EMIList from "../EMI/index";
+import EMIForm from "../EMI/form";
+import CCBillList from "../CreditCardBill/index";
+import CCBillForm from "../CreditCardBill/form";
+
 import CreditCardList from "../CreditCard/index";
 import CreditCardForm from "../CreditCard/form";
 
@@ -22,7 +25,8 @@ const config = Platform.select({
 
 const CCBillStack = createStackNavigator(
   {
-    CCBill: CCBillScreen
+    CCBill: CCBillList,
+    AddCCBill:CCBillForm
   },
   config
 );
@@ -41,7 +45,8 @@ CCBillStack.path = "";
 
 const EMIStack = createStackNavigator(
   {
-    EMI: EMIScreen
+    EMI: EMIList,
+    AddEMI: EMIForm,
   },
   config
 );
@@ -81,24 +86,24 @@ ProfileStack.navigationOptions = {
 
 ProfileStack.path = "";
 
-const SavingsStack = createStackNavigator(
-  {
-    Savings: SavingsScreen
-  },
-  config
-);
+// const SavingsStack = createStackNavigator(
+//   {
+//     Savings: SavingsScreen
+//   },
+//   config
+// );
 
-SavingsStack.navigationOptions = {
-  tabBarLabel: "Savings",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-link" : "grid"}
-    />
-  )
-};
+// SavingsStack.navigationOptions = {
+//   tabBarLabel: "Savings",
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={Platform.OS === "ios" ? "ios-link" : "grid"}
+//     />
+//   )
+// };
 
-SavingsStack.path = "";
+// SavingsStack.path = "";
 
 const DashboardStack = createStackNavigator(
   {
@@ -123,7 +128,7 @@ DashboardStack.path = "";
 
 const tabNavigator = createBottomTabNavigator({
   DashboardStack,
-  SavingsStack,
+  //SavingsStack,
   EMIStack,
   CCBillStack,
   ProfileStack,

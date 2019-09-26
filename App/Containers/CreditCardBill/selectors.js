@@ -4,9 +4,9 @@
 
 import { createSelector } from "reselect";
 
-const selectCreditCard = state => state.creditcard;
+const selectCreditCard = state => state.creditcardbill;
 
-const makeSelectCardList = () =>
+const makeSelectCardBillList = () =>
   createSelector(
     selectCreditCard,
     creditCardState => creditCardState.cards
@@ -45,7 +45,7 @@ const makeSelectCardApiLoading = () =>
 
 export {
   selectCreditCard,
-  makeSelectCardList,
+  makeSelectCardBillList,
   makeSelectCardNo,
   makeSelectCardBank,
   makeSelectCardLimit,

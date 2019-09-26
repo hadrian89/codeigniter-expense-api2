@@ -6,6 +6,29 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
+  containerList: {
+    margin: 10
+  },
+  sectionListHeader: {
+    alignItems: "center",
+    alignSelf: "stretch",
+    width: "100%",
+    fontSize: 22,
+    color: "white"
+  },
+  sectionListRow: {
+    flex: 1,
+    alignSelf: "stretch",
+    borderBottomWidth: 1,
+    padding: 10,
+    flexDirection: "row"
+  },
+  sectionListItem: {
+    padding: 10,
+    flex: 1,
+    alignSelf: "stretch",
+    backgroundColor: "white"
+  },
   backgroundImage: { width: "100%", height: "100%" },
   inputItem: {
     borderBottomColor: "#F5FCFF",
@@ -19,31 +42,31 @@ export default StyleSheet.create({
     alignItems: "center"
   },
   modalBackground: {
-    position:'absolute',
-    zIndex:999,
+    position: "absolute",
+    zIndex: 999,
     flex: 1,
-    alignItems: 'center',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "space-around"
   },
   activityLoading: {
-    backgroundColor: '#00000040',
+    backgroundColor: "#00000040",
     height: 100,
     width: 100,
     borderRadius: 10,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around'
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around"
   },
-  loginRegText:{
-    fontSize:25,
-    paddingBottom:10,
-    color:'white'
+  loginRegText: {
+    fontSize: 25,
+    paddingBottom: 10,
+    color: "white"
   },
-  loginRegSubText:{
-    fontSize:18,
-    paddingBottom:20,
-    color:'white'
+  loginRegSubText: {
+    fontSize: 18,
+    paddingBottom: 20,
+    color: "white"
   },
   input: {
     height: 45,
@@ -79,11 +102,11 @@ export default StyleSheet.create({
     borderBottomColor: "#FFFFFF",
     flex: 1,
     padding: 10,
-    width:200,
+    width: 200,
     borderWidth: 0,
-    alignSelf: "stretch",
+    alignSelf: "stretch"
   },
-  inputErr: { color: "red", marginLeft: 10,position:'absolute',bottom:-20 },
+  inputErr: { color: "red", marginLeft: 10, position: "absolute", bottom: -20 },
   buttonPrimary: {
     marginTop: 10,
     marginRight: 10,

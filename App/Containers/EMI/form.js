@@ -116,7 +116,7 @@ function validate(formProps) {
 
 class AddCreditCard extends React.Component {
   static navigationOptions = {
-    title: "Add Credit Card"
+    title: "Add Credit Card EMI"
   };
   state = {
     cardOptions: [

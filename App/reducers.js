@@ -3,20 +3,25 @@ import loginReducer from "./Containers/Login/reducers";
 import registerReducer from "./Containers/Registration/reducers";
 import dashboardReducer from "./Containers/Dashboard/reducers";
 import creditcardReducer from "./Containers/CreditCard/reducers";
+import creditcardBillReducer from "./Containers/CreditCardBill/reducers";
+import updateProfileReducer from "./Containers/Profile/reducers";
 
 import createSagaMiddleware from "redux-saga";
 import { reducer as formReducer } from "redux-form";
 
 import { Platform } from "react-native";
 
-import appSaga from "./saga";
+import { rootSaga } from "./sagas";
+import { createLogger } from "redux-logger";
 const sagaMiddleware = createSagaMiddleware();
 
 const rootReducer = combineReducers({
   dashboard: dashboardReducer,
   creditcard: creditcardReducer,
+  creditcardbill: creditcardBillReducer,
   login: loginReducer,
   register: registerReducer,
+  profile: updateProfileReducer,
   form: formReducer
 });
 
@@ -40,6 +45,6 @@ export default function configureStore() {
     store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
   }
 
-  sagaMiddleware.run(appSaga);
+  sagaMiddleware.run(rootSaga);
   return store;
 }

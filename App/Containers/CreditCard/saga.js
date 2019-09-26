@@ -1,20 +1,13 @@
-import request from "./utils/request";
-// import { GET_TOKEN } from "./Containers/Dashboard/constants";
-import { ACTION_LOGIN, GET_USERID } from "./Containers/Login/constants";
-import { ACTION_REGISTER } from "./Containers/Registration/constants";
+import request from "../../utils/request";
 import {
   GET_CARD_LIST,
   ADD_NEW_CARD,
   UPDATE_CARD,
   REMOVE_CARD
-} from "./Containers/CreditCard/constants";
+} from "../CreditCard/constants";
 
 import { call, put, select, takeEvery } from "redux-saga/effects";
-import // tokenLoaded,
-// tokenLoadingError,
-// getUserIdLoaded,
-// getUserIdError
-"./Containers/Dashboard/actions";
+
 import {
   getCardSuccess,
   getCardFailed,
@@ -22,99 +15,11 @@ import {
   addCardFailed,
   removeCardSuccess,
   removeCardFailed
-} from "./Containers/CreditCard/actions";
-import {
-  loginSuccess,
-  loginError,
-  getUserIdLoaded,
-  getUserIdError
-} from "./Containers/Login/actions";
-import{
-  registerSuccess,
-  registerError
-} from "./Containers/Registration/actions";
+} from "../CreditCard/actions";
 
-import {
-  makeSelectToken,
-  makeSelectUserId
-} from "./Containers/Login/selectors";
+import { makeSelectToken, makeSelectUserId } from "../Login/selectors";
 
 const API_URL = "http://weblybox.com/ci-rest-jwt";
-
-function* fetchToken(action) {
-  const requestURL = API_URL + "/api/auth/login";
-  const params = {
-    username: action.username,
-    password: action.password
-  };
-  const headers = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(params)
-  };
-
-  try {
-    // Call our request helper (see 'utils/request')
-    const resp = yield call(request, requestURL, headers);
-    yield put(loginSuccess(resp.token, params.username));
-  } catch (err) {
-    yield put(loginError(err));
-  }
-}
-
-function* registration(action) {
-
-  const requestURL = API_URL + "/api/auth/registration";
-  const params = {
-    username: action.username,
-    password: action.password,
-    email: action.phone,
-  };
-  const headers = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(params)
-  };
-
-  try {
-    // Call our request helper (see 'utils/request')
-    const resp = yield call(request, requestURL, headers);
-    yield put(registerSuccess(resp.userid, params.username));
-  } catch (err) {
-    yield put(registerError(err));
-  }
-}
-
-function* fetchUserId(action) {
-  const token = yield select(makeSelectToken());
-  const requestURL = API_URL + "/api/main/test";
-  const params = {
-    username: action.username,
-    password: action.password
-  };
-
-  const tokens = "Bearer ".concat(token);
-  const headers = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: tokens
-    },
-    body: JSON.stringify(params)
-  };
-
-  try {
-    // Call our request helper (see 'utils/request')
-    const resp = yield call(request, requestURL, headers);
-    yield put(getUserIdLoaded(resp, resp.id));
-  } catch (err) {
-    yield put(getUserIdError(err));
-  }
-}
 
 function* fetchCardList() {
   const token = yield select(makeSelectToken());
@@ -240,15 +145,11 @@ function* removeCard(prm) {
   }
 }
 
-function* dataSaga() {
-  // yield takeEvery(GET_TOKEN, fetchToken);
-  yield takeEvery(ACTION_LOGIN, fetchToken);
-  yield takeEvery(ACTION_REGISTER, registration);
-  yield takeEvery(GET_USERID, fetchUserId);
+function* creditCardSaga() {
   yield takeEvery(GET_CARD_LIST, fetchCardList);
   yield takeEvery(ADD_NEW_CARD, addCard);
   yield takeEvery(UPDATE_CARD, updateCard);
   yield takeEvery(REMOVE_CARD, removeCard);
 }
 
-export default dataSaga;
+export default creditCardSaga;

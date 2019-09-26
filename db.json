@@ -1,0 +1,80 @@
+{
+  "get_profile": {
+    "id": 1,
+    "user_id": "1",
+    "firstname": "abhinav",
+    "lastname": "sri",
+    "email": "dev.abhinav89@gmail.com",
+    "dob": "1988-11-08",
+    "mobile": "+919411056051",
+    "pan": "HFGFH5757F"
+  },
+  "post_profile": {
+    "userid": "1",
+    "dob": "1988-11-08",
+    "email": "dev.abhinav89@gmail.com",
+    "firstname": "abhinavv",
+    "lastname": "srivastav",
+    "pan": "HFGFH5757F"
+  },
+  "post_card_bill": [
+    {
+      "bank": "HSBC",
+      "data": [
+        {
+          "id": "1",
+          "card_id": "1",
+          "card_bank": "HSBC",
+          "bill_month_year": "02-2019",
+          "total_amnt": "39000",
+          "min_due": "2122",
+          "due_date": "02-03-2019",
+          "bill_date": "12-02-2019",
+          "opening_bal": "3600",
+          "payment_credit": "7200",
+          "purchase_debits": "25000",
+          "finance_charge": "676",
+          "credit_limit": "100000",
+          "available_credit_limit": "61000"
+        },
+        {
+          "id": "2",
+          "card_id": "1",
+          "card_bank": "HSBC",
+          "bill_month_year": "03-2019",
+          "total_amnt": "39000",
+          "min_due": "2122",
+          "due_date": "02-04-2019",
+          "bill_date": "12-03-2019",
+          "opening_bal": "3600",
+          "payment_credit": "7200",
+          "purchase_debits": "25000",
+          "finance_charge": "676",
+          "credit_limit": "100000",
+          "available_credit_limit": "61000"
+        }
+      ]
+    },
+    {
+      "bank": "SBI",
+      "data": [
+        {
+          "id": "3",
+          "card_id": "2",
+          "card_bank": "SBI",
+          "bill_month_year": "02-2019",
+          "total_amnt": "39000",
+          "min_due": "2122",
+          "due_date": "02-03-2019",
+          "bill_date": "12-02-2019",
+          "opening_bal": "3600",
+          "payment_credit": "7200",
+          "purchase_debits": "25000",
+          "finance_charge": "676",
+          "credit_limit": "100000",
+          "available_credit_limit": "61000"
+        }
+      ]
+    }
+  ]
+}

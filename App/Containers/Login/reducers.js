@@ -4,7 +4,7 @@ import {
   LOGIN_FAILED,
   GET_USERID_SUCCEEDED,
   GET_USERID_FAILED,
-  ACTION_LOGOUT
+  ACTION_LOGOUT,
 } from "./constants";
 
 import { fromJS } from "immutable";
@@ -19,7 +19,7 @@ export const initialState = fromJS({
   loading: false
 });
 
-const dashboardReducer = (state = initialState, action) => {
+const loginReducer = (state = initialState, action) => {
   switch (action.type) {
     case ACTION_LOGIN:
       return {
@@ -36,7 +36,8 @@ const dashboardReducer = (state = initialState, action) => {
     case LOGIN_FAILED:
       return {
         ...state,
-        error: action.error
+        error: action.error,
+        loading: false
       };
     case GET_USERID_SUCCEEDED:
       return {
@@ -67,4 +68,4 @@ const dashboardReducer = (state = initialState, action) => {
   }
 };
 
-export default dashboardReducer;
+export default loginReducer;

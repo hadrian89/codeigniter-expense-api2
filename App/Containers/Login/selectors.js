@@ -9,31 +9,37 @@ const selectLogin = state => state.login;
 const makeSelectUsername = () =>
   createSelector(
     selectLogin,
-    dashboardState => dashboardState.username
+    loginState => loginState.username
   );
 
 const makeSelectUserDetail = () =>
   createSelector(
     selectLogin,
-    dashboardState => dashboardState.userdetail
+    loginState => loginState.userdetail
   );
 
 const makeSelectUserId = () =>
   createSelector(
     selectLogin,
-    dashboardState => dashboardState.userid
+    loginState => loginState.userid
   );
 
 const makeSelectToken = () =>
   createSelector(
     selectLogin,
-    dashboardState => dashboardState.token
+    loginState => loginState.token
   );
 
 const makeSelectLoginLoading = () =>
   createSelector(
     selectLogin,
-    dashboardState => dashboardState.loading
+    loginState => loginState.loading
+  );
+
+const makeSelectLoginError = () =>
+  createSelector(
+    selectLogin,
+    loginState => loginState.error
   );
 
 export {
@@ -42,5 +48,6 @@ export {
   makeSelectToken,
   makeSelectUserDetail,
   makeSelectUserId,
-  makeSelectLoginLoading
+  makeSelectLoginLoading,
+  makeSelectLoginError
 };

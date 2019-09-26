@@ -5,14 +5,19 @@ import {
   Button,
   ScrollView,
   TouchableHighlight,
-  Platform
+  Platform,
+  ActivityIndicator,
+  ImageBackground
 } from "react-native";
 import { connect } from "react-redux";
+const remote = require("../../../assets/images/login-bg.jpg");
+
+import styles from "../../style";
 
 import { ListItem, withTheme, ThemeProvider } from "react-native-elements";
 import { createStructuredSelector } from "reselect";
 import { getCard } from "./actions";
-import { makeSelectCardList } from "./selectors";
+import { makeSelectCardList, makeSelectCardApiLoading } from "./selectors";
 
 class CreditCardList extends React.Component {
   static navigationOptions = {
@@ -29,6 +34,19 @@ class CreditCardList extends React.Component {
   }
   componentDidMount() {
     this.props.dispatchGetCard();
+  }
+
+  componentWillReceiveProps(prevProps) {
+    if (
+      prevProps.navigation.state.params != this.props.navigation.state.params
+    ) {
+      if (
+        prevProps.navigation.state.params &&
+        prevProps.navigation.state.params.reload
+      ) {
+        this.props.dispatchGetCard();
+      }
+    }
   }
 
   editCard(id) {
@@ -97,10 +115,23 @@ class CreditCardList extends React.Component {
     //   },
     // };
 
-    const { theme, updateTheme } = this.props;
+    const { theme, updateTheme, loading } = this.props;
     // updateTheme({ colors: { primary: 'red' } });
+
+    if (loading) {
+      return (
+        <View style={[styles.container]}>
+          <View style={styles.modalBackground}>
+            <View style={styles.activityLoading}>
+              <ActivityIndicator size="large" />
+            </View>
+          </View>
+        </View>
+      );
+    }
     return (
-      <ThemeProvider theme={theme} updateTheme={updateTheme}>
+      // <ThemeProvider theme={theme} updateTheme={updateTheme}>
+      <ImageBackground source={remote} style={styles.backgroundImage}>
         <ScrollView>
           <Button
             block
@@ -123,16 +154,18 @@ class CreditCardList extends React.Component {
             />
           ))}
         </ScrollView>
-      </ThemeProvider>
+      </ImageBackground>
+      // </ThemeProvider>
     );
   }
 }
 
 const mapStateToProps = createStructuredSelector({
-  card_list: makeSelectCardList()
+  card_list: makeSelectCardList(),
+  loading: makeSelectCardApiLoading()
 });
 const mapDispatchToProps = {
-  dispatchGetCard: () => getCard("1")
+  dispatchGetCard: () => getCard()
 };
 export default connect(
   mapStateToProps,

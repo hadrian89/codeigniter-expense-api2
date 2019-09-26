@@ -114,9 +114,9 @@ function validate(formProps) {
   return errors;
 }
 
-class AddCreditCard extends React.Component {
+class AddSavings extends React.Component {
   static navigationOptions = {
-    title: "Add Credit Card"
+    title: "Add Savings"
   };
   state = {
     cardOptions: [
@@ -316,14 +316,14 @@ export function mapDispatchToProps(dispatch) {
 
 const form = "creditCardForm";
 
-AddCreditCard = reduxForm({
+AddSavings = reduxForm({
   form,
   touchOnBlur: false,
   touchOnChange: false
-})(AddCreditCard);
+})(AddSavings);
 
 const selector = formValueSelector(form);
-AddCreditCard = connect(state => {
+AddSavings = connect(state => {
   const form_cc_no = selector(state, "form_cc_no");
   const form_cc_bank = selector(state, "form_cc_bank");
   const form_cc_limit = selector(state, "form_cc_limit");
@@ -334,8 +334,8 @@ AddCreditCard = connect(state => {
     form_cc_limit,
     form_cc_available_limit
   };
-})(AddCreditCard);
+})(AddSavings);
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddCreditCard);
+)(AddSavings);

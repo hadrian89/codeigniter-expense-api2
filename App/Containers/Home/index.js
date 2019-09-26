@@ -14,7 +14,7 @@ class HomeScreen extends React.Component {
     ) {
       return <AppNavigator />;
     } else {
-      return <AppNavigators />;
+      return <AppNavigator />;
     }
   }
 }

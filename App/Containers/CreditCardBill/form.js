@@ -114,9 +114,9 @@ function validate(formProps) {
   return errors;
 }
 
-class AddCreditCard extends React.Component {
+class AddCreditCardBill extends React.Component {
   static navigationOptions = {
-    title: "Add Credit Card"
+    title: "Add Credit Card Bill"
   };
   state = {
     cardOptions: [
@@ -162,44 +162,45 @@ class AddCreditCard extends React.Component {
   componentDidMount() {
     if (
       this.props.navigation.state.params &&
-      this.props.navigation.state.params.cardid
+      this.props.navigation.state.params.billid
     ) {
-      this.props.changeFieldValue(
-        "form_cc_no",
-        this.props.navigation.state.params.cardid.card_number
-      );
-      this.props.changeFieldValue(
-        "form_cc_bank",
-        this.props.navigation.state.params.cardid.bank_name
-      );
-      this.props.changeFieldValue(
-        "form_cc_limit",
-        this.props.navigation.state.params.cardid.credit_limit
-      );
-      this.props.changeFieldValue(
-        "form_cc_available_limit",
-        this.props.navigation.state.params.cardid.available_limit
-      );
+      console.log(this.props.navigation.state.params.billid,'this.props.navigation.state.params.billid')
+      // this.props.changeFieldValue(
+      //   "form_cc_no",
+      //   this.props.navigation.state.params.cardid.card_number
+      // );
+      // this.props.changeFieldValue(
+      //   "form_cc_bank",
+      //   this.props.navigation.state.params.cardid.bank_name
+      // );
+      // this.props.changeFieldValue(
+      //   "form_cc_limit",
+      //   this.props.navigation.state.params.cardid.credit_limit
+      // );
+      // this.props.changeFieldValue(
+      //   "form_cc_available_limit",
+      //   this.props.navigation.state.params.cardid.available_limit
+      // );
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.success != this.props.success && this.props.success) {
-      this.props.navigation.navigate("CreditCardList", { reload: true });
-    }
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.success != this.props.success && this.props.success) {
+  //     this.props.navigation.navigate("CreditCardList", { reload: true });
+  //   }
 
-    if (prevProps.error != this.props.error && this.props.error) {
-      console.log(this.props.error, "this.props.error");
-    }
-  }
+  //   if (prevProps.error != this.props.error && this.props.error) {
+  //     console.log(this.props.error, "this.props.error");
+  //   }
+  // }
 
   removeCard = () => {
     if (
       this.props.navigation.state.params &&
-      this.props.navigation.state.params.cardid
+      this.props.navigation.state.params.billid
     ) {
       this.props.dispatchRemoveCard(
-        this.props.navigation.state.params.cardid.id
+        this.props.navigation.state.params.billid.id
       );
     }
   };
@@ -298,32 +299,32 @@ class AddCreditCard extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  success: makeSelectCardSuccessResp(),
-  error: makeSelectCardErrorResp(),
-  loading: makeSelectCardApiLoading()
+  // success: makeSelectCardSuccessResp(),
+  // error: makeSelectCardErrorResp(),
+  // loading: makeSelectCardApiLoading()
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
-    addNewCard: val => dispatch(addCard(val)),
-    dispatchUpdateCard: (id, val) => dispatch(updateCard(id, val)),
-    dispatchRemoveCard: id => dispatch(removeCard(id)),
-    changeFieldValue: function(field, value) {
-      dispatch(change(form, field, value));
-    }
+    // addNewCard: val => dispatch(addCard(val)),
+    // dispatchUpdateCard: (id, val) => dispatch(updateCard(id, val)),
+    // dispatchRemoveCard: id => dispatch(removeCard(id)),
+    // changeFieldValue: function(field, value) {
+    //   dispatch(change(form, field, value));
+    // }
   };
 }
 
-const form = "creditCardForm";
+const form = "creditCardBillForm";
 
-AddCreditCard = reduxForm({
+AddCreditCardBill = reduxForm({
   form,
   touchOnBlur: false,
   touchOnChange: false
-})(AddCreditCard);
+})(AddCreditCardBill);
 
 const selector = formValueSelector(form);
-AddCreditCard = connect(state => {
+AddCreditCardBill = connect(state => {
   const form_cc_no = selector(state, "form_cc_no");
   const form_cc_bank = selector(state, "form_cc_bank");
   const form_cc_limit = selector(state, "form_cc_limit");
@@ -334,8 +335,8 @@ AddCreditCard = connect(state => {
     form_cc_limit,
     form_cc_available_limit
   };
-})(AddCreditCard);
+})(AddCreditCardBill);
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddCreditCard);
+)(AddCreditCardBill);

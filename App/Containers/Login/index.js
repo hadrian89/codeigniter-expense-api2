@@ -35,7 +35,8 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 import {
   makeSelectToken,
   makeSelectUserId,
-  makeSelectLoginLoading
+  makeSelectLoginLoading,
+  makeSelectLoginError
 } from "./selectors";
 
 const remote = require("../../../assets/images/login-bg.jpg");
@@ -90,16 +91,35 @@ class LoginScreen extends React.Component {
   state = {};
 
   componentWillReceiveProps(prevProps) {
+    //console.log(prevProps,this.props,'bnm')
+    if (prevProps.respError != this.props.respError) {
+      //console.log(prevProps.respError,this.props.respError,'this.props.respError')
+      Alert.alert(
+        'Alert',
+        prevProps.respError,
+        [
+          {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        {cancelable: false},
+      );
+      
+    }
     if (prevProps.token != this.props.token) {
       this.props.dispatchUserId(
         this.props.form_login_username,
         this.props.form_login_password
       );
     }
-    if (prevProps.userid != this.props.userid && this.props.userid > 0) {
-      console.log(this.props.userid, "this.props.userid");
-      // this.props.navigation.navigate("Dashboard")
-    }
+    // if ((prevProps.userid != this.props.userid) && this.props.userid > 0) {
+    //   console.log(this.props.userid, "this.props.userid");
+    //   // this.props.navigation.navigate("Dashboard")
+    // }
   }
 
   onSaveContinue = values => {
@@ -181,7 +201,8 @@ class LoginScreen extends React.Component {
 const mapStateToProps = createStructuredSelector({
   token: makeSelectToken(),
   userid: makeSelectUserId(),
-  loading: makeSelectLoginLoading()
+  loading: makeSelectLoginLoading(),
+  respError: makeSelectLoginError(),
 });
 
 export function mapDispatchToProps(dispatch) {

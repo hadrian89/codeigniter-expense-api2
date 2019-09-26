@@ -8,7 +8,8 @@ import {
   Picker,
   TextInput,
   ImageBackground,
-  ScrollView
+  ScrollView,
+  ActivityIndicator
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -22,16 +23,18 @@ import {
 } from "redux-form";
 
 import { createStructuredSelector } from "reselect";
-import { addCard, updateCard, removeCard } from "../CreditCard/actions";
+import { updateProfile, getProfile } from "../Profile/actions";
 import { actionLogout } from "../Login/actions";
 
 import styles from "../../style";
 const remote = require("../../../assets/images/login-bg.jpg");
 
 import {
-  makeSelectCardSuccessResp,
-  makeSelectCardErrorResp
-} from "../CreditCard/selectors";
+  makeSelectProfileSuccessResp,
+  makeSelectProfileErrorResp,
+  makeSelectProfileApiLoading,
+  makeSelectGetProfileData
+} from "../Profile/selectors";
 
 const renderInput = ({
   type,
@@ -54,84 +57,35 @@ const renderInput = ({
   );
 };
 
-const renderPicker = ({
-  input: { onChange, value, ...inputProps },
-  children,
-  style,
-  styleErr,
-  meta: { touched, error },
-  ...pickerProps
-}) => (
-  <View>
-    <Picker
-      selectedValue={value}
-      style={style}
-      onValueChange={value => onChange(value)}
-      {...inputProps}
-      {...pickerProps}
-    >
-      {children}
-    </Picker>
-    {touched && error && <Text style={[styles.inputErr]}>{error}</Text>}
-  </View>
-);
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-const theme = {
-  // Button: {
-  //   titleStyle: {
-  //     color: 'red',
-  //   },
-  // },
-};
 
 function validate(formProps) {
   let alldata = JSON.parse(JSON.stringify(formProps));
   const errors = {};
 
-  if (!alldata.form_cc_no) {
-    errors.form_cc_no = "Please enter credit card number";
-  }
-  // else if (alldata.form_cc_no) {
-  //   if (alldata.form_cc_no.length != 12) {
-  //     errors.form_cc_no = "Please enter 17 digit credit card number";
-  //   }
-  // }
-
-  if (!alldata.form_cc_bank) {
-    errors.form_cc_bank = "Please select credit card bank";
+  if (!alldata.form_firstname) {
+    errors.form_firstname = "Please enter First Name";
   }
 
-  if (!alldata.form_cc_limit) {
-    errors.form_cc_limit = "Please enter credit limit";
+  if (!alldata.form_lastname) {
+    errors.form_lastname = "Please enter Last Name";
   }
-  // else if (alldata.form_cc_limit) {
-  //   if (alldata.form_cc_limit.length != 17) {
-  //     errors.form_cc_limit = "Please enter 17 digit credit limit";
-  //   }
-  // }
+  if (!alldata.form_email) {
+    errors.form_email = "Please enter Email ID";
+  }
+  if (!alldata.form_pan) {
+    errors.form_pan = "Please enter PAN";
+  }
   return errors;
 }
 
 class Profile extends React.Component {
   static navigationOptions = {
-    title: "Add Credit Card"
+    title: "Update Profile"
   };
   constructor() {
     super();
-    this.state = {
-      cardOptions: [
-        "HSBC",
-        "HDFC",
-        "SBI",
-        "ICICI",
-        "BOB",
-        "AMEX",
-        "SCA",
-        "PNB",
-        "KOTAK"
-      ]
-    };
+    this.state = {};
     this.actionLogout = this.actionLogout.bind(this);
   }
 
@@ -145,17 +99,7 @@ class Profile extends React.Component {
         if (countErr > 0) {
           throw new SubmissionError(errors);
         } else {
-          if (
-            this.props.navigation.state.params &&
-            this.props.navigation.state.params.cardid
-          ) {
-            this.props.dispatchUpdateCard(
-              this.props.navigation.state.params.cardid.id,
-              values
-            );
-          } else {
-            this.props.addNewCard(values);
-          }
+          this.props.dispatchUpdateProfile(values);
         }
       });
 
@@ -163,49 +107,21 @@ class Profile extends React.Component {
   };
 
   componentDidMount() {
-    if (
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.cardid
-    ) {
-      this.props.changeFieldValue(
-        "form_cc_no",
-        this.props.navigation.state.params.cardid.card_number
-      );
-      this.props.changeFieldValue(
-        "form_cc_bank",
-        this.props.navigation.state.params.cardid.bank_name
-      );
-      this.props.changeFieldValue(
-        "form_cc_limit",
-        this.props.navigation.state.params.cardid.credit_limit
-      );
-      this.props.changeFieldValue(
-        "form_cc_available_limit",
-        this.props.navigation.state.params.cardid.available_limit
-      );
-    }
+    this.props.dispatchProfileData();
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.success != this.props.success && this.props.success) {
-      this.props.navigation.navigate("CreditCardList");
-    }
-
-    if (prevProps.error != this.props.error && this.props.error) {
-      console.log(this.props.error, "this.props.error");
+    if (prevProps.profile !== this.props.profile && this.props.profile) {
+      this.props.changeFieldValue(
+        "form_firstname",
+        this.props.profile.firstname
+      );
+      this.props.changeFieldValue("form_lastname", this.props.profile.lastname);
+      this.props.changeFieldValue("form_email", this.props.profile.email);
+      this.props.changeFieldValue("form_dob", this.props.profile.dob);
+      this.props.changeFieldValue("form_pan", this.props.profile.pan);
     }
   }
-
-  removeCard = () => {
-    if (
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.cardid
-    ) {
-      this.props.dispatchRemoveCard(
-        this.props.navigation.state.params.cardid.id
-      );
-    }
-  };
 
   actionLogout() {
     this.props.dispatchLogout();
@@ -213,129 +129,110 @@ class Profile extends React.Component {
   }
 
   render() {
-    const { handleSubmit } = this.props;
-    let removeHtml;
-    if (
-      this.props.navigation.state.params &&
-      this.props.navigation.state.params.cardid
-    ) {
-      //removeHtml= <Ionicons name="md-remove-circle"  onPress={() => this.removeCard()} size={32} color="red" />
-      removeHtml = (
-        <Button
-          block
-          title="Remove this Card"
-          onPress={() => this.removeCard()}
-          buttonStyle={[{ backgroundColor: "red" }]}
-          style={[styles.buttonDanger]}
-        ></Button>
-      );
-    }
+    const { handleSubmit, loading } = this.props;
     return (
-      // <ScrollView>
-      <ImageBackground source={remote} style={styles.backgroundImage}>
-        <View style={[styles.container]}>
-          {/* {loading && (
-            <View style={styles.modalBackground}>
-              <View style={styles.activityLoading}>
-                <ActivityIndicator size="large" />
+      <ScrollView>
+        <ImageBackground source={remote} style={styles.backgroundImage}>
+          <View style={[styles.container]}>
+            {loading && (
+              <View style={styles.modalBackground}>
+                <View style={styles.activityLoading}>
+                  <ActivityIndicator size="large" />
+                </View>
               </View>
+            )}
+            <Text>&nbsp; </Text>
+            <View style={[styles.inputItem]}>
+              <Field
+                component={renderInput}
+                name="form_firstname"
+                placeholder="Enter First Name"
+                type="number"
+                keyboardType="numeric"
+                style={[styles.input]}
+              />
             </View>
-          )} */}
-          <Text>&nbsp; </Text>
-          <View style={[styles.inputItem]}>
-            <Field
-              component={renderInput}
-              name="form_cc_no"
-              placeholder="Enter Card Number"
-              type="number"
-              keyboardType="numeric"
-              style={[styles.input]}
-            />
-          </View>
-          <View style={[styles.inputItem]}>
-            <Field
-              name="form_cc_bank"
-              component={renderPicker}
-              mode="dropdown"
-              style={[styles.select]}
-            >
-              <Picker.Item key={-1} value={0} label="Select Card" />
-              {this.state.cardOptions.map((s, i) => {
-                return <Picker.Item key={i} value={s} label={s} />;
-              })}
-            </Field>
-          </View>
-          <View style={[styles.inputItem]}>
-            <Field
-              component={renderInput}
-              name="form_cc_limit"
-              placeholder="Enter Credit Limit"
-              type="number"
-              keyboardType="numeric"
-              style={[styles.input]}
-            />
-          </View>
-          <View style={[styles.inputItem]}>
-            <Field
-              component={renderInput}
-              name="form_cc_available_limit"
-              placeholder="Enter Available Credit Limit"
-              type="number"
-              keyboardType="numeric"
-              style={[styles.input]}
-            />
-          </View>
-          <View style={[styles.buttonContainer]}>
-            <Button
-              title="Save and Continue"
-              full
-              rounded
-              success
-              onPress={handleSubmit(this.onSaveContinue)}
-              style={[styles.buttonPrimary]}
-            >
-              <Text>Submit</Text>
-            </Button>
-          </View>
-          <View style={[styles.buttonContainer]}>{removeHtml}</View>
+            <View style={[styles.inputItem]}>
+              <Field
+                component={renderInput}
+                name="form_lastname"
+                placeholder="Enter Last Name"
+                style={[styles.input]}
+              />
+            </View>
+            <View style={[styles.inputItem]}>
+              <Field
+                component={renderInput}
+                name="form_email"
+                placeholder="Enter Email ID"
+                style={[styles.input]}
+              />
+            </View>
+            <View style={[styles.inputItem]}>
+              <Field
+                component={renderInput}
+                name="form_dob"
+                placeholder="Enter DOB"
+                style={[styles.input]}
+              />
+            </View>
+            <View style={[styles.inputItem]}>
+              <Field
+                component={renderInput}
+                name="form_pan"
+                placeholder="Enter PAN"
+                style={[styles.input]}
+              />
+            </View>
+            <View style={[styles.buttonContainer]}>
+              <Button
+                title="Update"
+                full
+                rounded
+                success
+                onPress={handleSubmit(this.onSaveContinue)}
+                style={[styles.buttonPrimary]}
+              ></Button>
+            </View>
 
-          <View style={[styles.buttonContainer]}>
-            <Button
-              title="Logout"
-              full
-              rounded
-              success
-              onPress={this.actionLogout}
-              style={[styles.buttonPrimary]}
-            >
-              <Text>Submit</Text>
-            </Button>
+            <View style={[styles.buttonContainer]}>
+              <Button
+                title="Logout"
+                full
+                rounded
+                success
+                onPress={this.actionLogout}
+                style={[styles.buttonPrimary]}
+              >
+                <Text>Submit</Text>
+              </Button>
+            </View>
           </View>
-        </View>
-      </ImageBackground>
-      // </ScrollView>
+        </ImageBackground>
+      </ScrollView>
     );
   }
 }
 
 const mapStateToProps = createStructuredSelector({
-  success: makeSelectCardSuccessResp(),
-  error: makeSelectCardErrorResp()
+  success: makeSelectProfileSuccessResp(),
+  error: makeSelectProfileErrorResp(),
+  loading: makeSelectProfileApiLoading(),
+  profile: makeSelectGetProfileData()
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
     dispatchLogout: () => dispatch(actionLogout()),
-    addNewCard: val => dispatch(addCard(val)),
-    dispatchUpdateCard: (id, val) => dispatch(updateCard(id, val)),
-    dispatchRemoveCard: id => dispatch(removeCard(id)),
+    dispatchProfileData: () => dispatch(getProfile()),
+    dispatchUpdateProfile: (val) => dispatch(updateProfile(val)),
     changeFieldValue: function(field, value) {
       dispatch(change(form, field, value));
     }
   };
 }
 
-const form = "creditCardForm";
+const form = "profileForm";
 
 Profile = reduxForm({
   form,
@@ -345,15 +242,17 @@ Profile = reduxForm({
 
 const selector = formValueSelector(form);
 Profile = connect(state => {
-  const form_cc_no = selector(state, "form_cc_no");
-  const form_cc_bank = selector(state, "form_cc_bank");
-  const form_cc_limit = selector(state, "form_cc_limit");
-  const form_cc_available_limit = selector(state, "form_cc_available_limit");
+  const form_firstname = selector(state, "form_firstname");
+  const form_lastname = selector(state, "form_lastname");
+  const form_email = selector(state, "form_email");
+  const form_dob = selector(state, "form_dob");
+  const form_pan = selector(state, "form_pan");
   return {
-    form_cc_no,
-    form_cc_bank,
-    form_cc_limit,
-    form_cc_available_limit
+    form_firstname,
+    form_lastname,
+    form_email,
+    form_dob,
+    form_pan
   };
 })(Profile);
 export default connect(
