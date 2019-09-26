@@ -60,6 +60,10 @@ class Dashboard extends Component {
     });
   }
 
+  componentDidMount(){
+    this.generateData();
+  }
+
   render() {
     //https://github.com/oksktank/react-native-pure-chart/blob/master/examples/App.js
     return (
@@ -91,13 +95,13 @@ class Dashboard extends Component {
             </View>
           )}
 
-          <Button
+          {/* <Button
             style={{ marginTop: 20 }}
             title="Generate chart data"
             onPress={this.generateData}
           >
             <Text>Generate chart data</Text>
-          </Button>
+          </Button> */}
         </View>
       </ScrollView>
     );
