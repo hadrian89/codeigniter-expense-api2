@@ -4,6 +4,7 @@ import registerReducer from "./Containers/Registration/reducers";
 import dashboardReducer from "./Containers/Dashboard/reducers";
 import creditcardReducer from "./Containers/CreditCard/reducers";
 import creditcardBillReducer from "./Containers/CreditCardBill/reducers";
+import creditcardEmiReducer from "./Containers/CreditCardEmi/reducers";
 import updateProfileReducer from "./Containers/Profile/reducers";
 
 import createSagaMiddleware from "redux-saga";
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   dashboard: dashboardReducer,
   creditcard: creditcardReducer,
   creditcardbill: creditcardBillReducer,
+  creditcardemi: creditcardEmiReducer,
   login: loginReducer,
   register: registerReducer,
   profile: updateProfileReducer,

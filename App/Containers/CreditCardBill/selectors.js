@@ -4,52 +4,48 @@
 
 import { createSelector } from "reselect";
 
-const selectCreditCard = state => state.creditcardbill;
+const selectCreditCardBill = state => state.creditcardbill;
 
 const makeSelectCardBillList = () =>
   createSelector(
-    selectCreditCard,
-    creditCardState => creditCardState.cards
-  );
-const makeSelectCardNo = () =>
-  createSelector(
-    selectCreditCard,
-    creditCardState => creditCardState.formCardNo
-  );
-const makeSelectCardBank = () =>
-  createSelector(
-    selectCreditCard,
-    creditCardState => creditCardState.formCardBank
-  );
-const makeSelectCardLimit = () =>
-  createSelector(
-    selectCreditCard,
-    creditCardState => creditCardState.formCardLimit
+    selectCreditCardBill,
+    creditCardBillState => creditCardBillState.bills
   );
 
-const makeSelectCardSuccessResp = () =>
+const makeSelectUserAllCards = () =>
   createSelector(
-    selectCreditCard,
-    creditCardState => creditCardState.response
+    selectCreditCardBill,
+    creditCardBillState => creditCardBillState.cards
   );
-const makeSelectCardErrorResp = () =>
+
+const makeSelectCardDetails = () =>
   createSelector(
-    selectCreditCard,
-    creditCardState => creditCardState.error
+    selectCreditCardBill,
+    creditCardBillState => creditCardBillState.carddetail
   );
-const makeSelectCardApiLoading = () =>
+
+const makeSelectCardBillSuccessResp = () =>
   createSelector(
-    selectCreditCard,
-    creditCardState => creditCardState.loading
+    selectCreditCardBill,
+    creditCardBillState => creditCardBillState.response
+  );
+const makeSelectCardBillErrorResp = () =>
+  createSelector(
+    selectCreditCardBill,
+    creditCardBillState => creditCardBillState.error
+  );
+const makeSelectCardBillApiLoading = () =>
+  createSelector(
+    selectCreditCardBill,
+    creditCardBillState => creditCardBillState.loading
   );
 
 export {
-  selectCreditCard,
+  selectCreditCardBill,
   makeSelectCardBillList,
-  makeSelectCardNo,
-  makeSelectCardBank,
-  makeSelectCardLimit,
-  makeSelectCardSuccessResp,
-  makeSelectCardErrorResp,
-  makeSelectCardApiLoading
+  makeSelectCardBillSuccessResp,
+  makeSelectCardBillErrorResp,
+  makeSelectCardBillApiLoading,
+  makeSelectUserAllCards,
+  makeSelectCardDetails
 };

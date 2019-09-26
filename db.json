@@ -10,13 +10,64 @@
     "pan": "HFGFH5757F"
   },
   "post_profile": {
-    "userid": "1",
     "dob": "1988-11-08",
     "email": "dev.abhinav89@gmail.com",
     "firstname": "abhinavv",
     "lastname": "srivastav",
     "pan": "HFGFH5757F"
   },
+  "get_all_cards": [
+    {
+      "id": "1",
+      "user_id": "1",
+      "bank_name": "AXIS",
+      "card_type": "VISA",
+      "card_number": "2147483647",
+      "credit_limit": "600000",
+      "available_limit": "46000",
+      "min_due": "3600",
+      "total_billed_amnt": "7200",
+      "status": "1"
+    },
+    {
+      "id": "20",
+      "user_id": "1",
+      "bank_name": "SBI",
+      "card_type": "OTHERS",
+      "card_number": "676776767661",
+      "credit_limit": "768767661",
+      "available_limit": "876678",
+      "min_due": null,
+      "total_billed_amnt": null,
+      "status": "1"
+    },
+    {
+      "id": "23",
+      "user_id": "1",
+      "bank_name": "HDFC",
+      "card_type": "OTHERS",
+      "card_number": "68698698",
+      "credit_limit": "767",
+      "available_limit": "667",
+      "min_due": null,
+      "total_billed_amnt": null,
+      "status": "1"
+    }
+  ],
+  "get_card": {
+    "id": "2",
+    "user_id": "1",
+    "bank_name": "SBI",
+    "card_type": "VISA",
+    "card_number": "2147483647",
+    "credit_limit": "600000",
+    "available_limit": "46000",
+    "min_due": "3600",
+    "total_billed_amnt": "7200",
+    "due_date": "09-12-2019",
+    "status": "1"
+  },
+  "getpost_card_bill": [],
   "post_card_bill": [
     {
       "bank": "HSBC",

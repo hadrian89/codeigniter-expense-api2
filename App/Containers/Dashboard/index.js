@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
+import { View, Text, Button, StyleSheet, ScrollView, ImageBackground } from "react-native";
 import { withTheme } from "react-native-elements";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import PureChart from "react-native-pure-chart";
 import moment from "moment";
+const remote = require("../../../assets/images/login-bg.jpg");
+import styles from "../../style";
 
 class Dashboard extends Component {
   static navigationOptions = {
@@ -67,26 +69,27 @@ class Dashboard extends Component {
   render() {
     //https://github.com/oksktank/react-native-pure-chart/blob/master/examples/App.js
     return (
+      <ImageBackground source={remote} style={styles.backgroundImage}>
       <ScrollView>
         <Button
           block
           onPress={() => this.props.navigation.navigate("CreditCardList")}
-          title="Go to Credit Card"
+          title="Go to Credit Card List"
           success
         ></Button>
 
         <View>
           {this.state.display && (
-            <View style={{ padding: 20, marginTop: 100 }}>
+            <View style={{ padding: 20, marginTop: 20 }}>
               <PureChart
                 type={"bar"}
                 data={this.state.data}
                 height={100}
-                xAxisColor={"red"}
-                yAxisColor={"red"}
-                xAxisGridLineColor={"red"}
-                yAxisGridLineColor={"red"}
-                labelColor={"red"}
+                xAxisColor={"green"}
+                yAxisColor={"green"}
+                xAxisGridLineColor={"green"}
+                yAxisGridLineColor={"green"}
+                labelColor={"green"}
                 numberOfYAxisGuideLine={10}
               />
               <PureChart type={"line"} data={this.state.data} />
@@ -104,6 +107,7 @@ class Dashboard extends Component {
           </Button> */}
         </View>
       </ScrollView>
+      </ImageBackground>
     );
   }
 }

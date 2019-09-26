@@ -1,16 +1,16 @@
 import {
-  GET_CARD_BILL_LIST,
-  GET_CARD_BILL_LIST_SUCCEEDED,
-  GET_CARD_BILL_LIST_FAILED,
-  ADD_NEW_CARD_BILL_SUCCESS,
-  ADD_NEW_CARD_BILL_FAILED,
-  UPDATE_CARD_BILL,
-  UPDATE_CARD_BILL_SUCCESS,
-  UPDATE_CARD_BILL_FAILED,
-  REMOVE_CARD_BILL,
-  REMOVE_CARD_BILL_SUCCESS,
-  REMOVE_CARD_BILL_FAILED,
-  ADD_NEW_CARD_BILL,
+  GET_CARD_EMI_LIST,
+  GET_CARD_EMI_LIST_SUCCEEDED,
+  GET_CARD_EMI_LIST_FAILED,
+  ADD_NEW_CARD_EMI_SUCCESS,
+  ADD_NEW_CARD_EMI_FAILED,
+  UPDATE_CARD_EMI,
+  UPDATE_CARD_EMI_SUCCESS,
+  UPDATE_CARD_EMI_FAILED,
+  REMOVE_CARD_EMI,
+  REMOVE_CARD_EMI_SUCCESS,
+  REMOVE_CARD_EMI_FAILED,
+  ADD_NEW_CARD_EMI,
   GET_USER_ALL_CARDS_SUCCESS,
   GET_USER_ALL_CARDS_FAILED,
   GET_CARD_DETAIL,
@@ -23,7 +23,7 @@ import { fromJS } from "immutable";
 export const initialState = fromJS({
   loading: false,
   cards: false,
-  bills: false,
+  emis: false,
   success: false,
   error: false,
   cardid: false,
@@ -31,9 +31,9 @@ export const initialState = fromJS({
   carddetail: false
 });
 
-const creditcardBillReducer = (state = initialState, action) => {
+const creditcardEmiReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_CARD_BILL_LIST:
+    case GET_CARD_EMI_LIST:
       return {
         ...state,
         loading: true,
@@ -41,15 +41,15 @@ const creditcardBillReducer = (state = initialState, action) => {
         error: false,
         response: false
       };
-    case GET_CARD_BILL_LIST_SUCCEEDED:
+    case GET_CARD_EMI_LIST_SUCCEEDED:
       return {
         ...state,
         success: true,
-        bills: action.bills,
+        emis: action.emis,
         loading: false,
         response: false
       };
-    case GET_CARD_BILL_LIST_FAILED:
+    case GET_CARD_EMI_LIST_FAILED:
       return {
         ...state,
         error: action.error,
@@ -95,7 +95,7 @@ const creditcardBillReducer = (state = initialState, action) => {
         loading: false,
         response: false
       };
-    case ADD_NEW_CARD_BILL:
+    case ADD_NEW_CARD_EMI:
       return {
         ...state,
         loading: true,
@@ -103,7 +103,7 @@ const creditcardBillReducer = (state = initialState, action) => {
         error: false,
         response: false
       };
-    case UPDATE_CARD_BILL:
+    case UPDATE_CARD_EMI:
       return {
         ...state,
         loading: true,
@@ -111,7 +111,7 @@ const creditcardBillReducer = (state = initialState, action) => {
         error: false,
         response: false
       };
-    case REMOVE_CARD_BILL:
+    case REMOVE_CARD_EMI:
       return {
         ...state,
         loading: true,
@@ -119,37 +119,37 @@ const creditcardBillReducer = (state = initialState, action) => {
         error: false,
         response: false
       };
-    case ADD_NEW_CARD_BILL_SUCCESS:
+    case ADD_NEW_CARD_EMI_SUCCESS:
       return {
         ...state,
         response: action.response,
         loading: false
       };
-    case ADD_NEW_CARD_BILL_FAILED:
+    case ADD_NEW_CARD_EMI_FAILED:
       return {
         ...state,
         error: action.error,
         loading: false
       };
-    case UPDATE_CARD_BILL_SUCCESS:
+    case UPDATE_CARD_EMI_SUCCESS:
       return {
         ...state,
         response: action.response,
         loading: false
       };
-    case UPDATE_CARD_BILL_FAILED:
+    case UPDATE_CARD_EMI_FAILED:
       return {
         ...state,
         error: action.error,
         loading: false
       };
-    case REMOVE_CARD_BILL_SUCCESS:
+    case REMOVE_CARD_EMI_SUCCESS:
       return {
         ...state,
         response: action.response,
         loading: false
       };
-    case REMOVE_CARD_BILL_FAILED:
+    case REMOVE_CARD_EMI_FAILED:
       return {
         ...state,
         error: action.error,
@@ -160,4 +160,4 @@ const creditcardBillReducer = (state = initialState, action) => {
   }
 };
 
-export default creditcardBillReducer;
+export default creditcardEmiReducer;

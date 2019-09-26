@@ -11,8 +11,9 @@ import Dashboard from "../Dashboard/index";
 // import SavingsScreen from "../Savings/index";
 import ProfileScreen from "../Profile/index";
 
-import EMIList from "../EMI/index";
-import EMIForm from "../EMI/form";
+import EMIList from "../CreditCardEmi/index";
+import EMIForm from "../CreditCardEmi/form";
+
 import CCBillList from "../CreditCardBill/index";
 import CCBillForm from "../CreditCardBill/form";
 

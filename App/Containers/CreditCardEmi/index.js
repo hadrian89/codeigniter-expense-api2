@@ -18,12 +18,12 @@ const remote = require("../../../assets/images/login-bg.jpg");
 import styles from "../../style";
 
 import { createStructuredSelector } from "reselect";
-import { getCardBill,getCurrentUserCCCards } from "./actions";
-import { makeSelectCardBillList, makeSelectCardBillApiLoading } from "./selectors";
+import { getCardEmi,getCurrentUserCCCards } from "./actions";
+import { makeSelectCardEmiList, makeSelectCardEmiApiLoading } from "./selectors";
 
-class CreditCardBillList extends React.Component {
+class CreditCardEmiList extends React.Component {
   static navigationOptions = {
-    title: "Credit Card Bill List"
+    title: "Credit Card Emi List"
   };
 
   constructor() {
@@ -32,10 +32,10 @@ class CreditCardBillList extends React.Component {
       isLoading: true,
       notFound: "Card not found.\nPlease click (Add card) button to add it."
     };
-    this.editCardBill = this.editCardBill.bind(this);
+    this.editCardEmi = this.editCardEmi.bind(this);
   }
   componentDidMount() {
-    this.props.dispatchGetCardBill();
+    this.props.dispatchGetCardEmi();
     this.props.dispatchGetUserAllCards();
   }
 
@@ -47,18 +47,18 @@ class CreditCardBillList extends React.Component {
         prevProps.navigation.state.params &&
         prevProps.navigation.state.params.reload
       ) {
-        this.props.dispatchGetCardBill();
+        this.props.dispatchGetCardEmi();
       }
     }
   }
 
-  editCardBill(id,bank) {
+  editCardEmi(id,bank) {
     
-    let allcardbills = this.props.card_bill_list;
+    let allcardemis = this.props.card_emi_list;
     let carddetail = [];
-    if (typeof allcardbills !== "undefined") {
-      if (allcardbills.length > 0) {
-        allcardbills.map(function(v, k) {
+    if (typeof allcardemis !== "undefined") {
+      if (allcardemis.length > 0) {
+        allcardemis.map(function(v, k) {
           if (v['bank'] === bank) {
             v['data'].map(function(r,s){
                 if(r.id === id){
@@ -69,16 +69,16 @@ class CreditCardBillList extends React.Component {
         });
       }
     }
-    this.props.navigation.navigate("AddCCBill", { billid: carddetail });
+    this.props.navigation.navigate("AddCCEmi", { emiid: carddetail });
   }
 
   renderRow(bank,bank_name) {
     return (
       <View>
-        <TouchableOpacity  style={[styles.sectionListRow]} button onPress={() => this.editCardBill(bank.id,bank_name)}>
+        <TouchableOpacity  style={[styles.sectionListRow]} button onPress={() => this.editCardEmi(bank.id,bank_name)}>
           <View style={[styles.sectionListItem]}>
-            <Text>Bill Date</Text>
-            <Text>{bank.bill_date}</Text>
+            <Text>Emi Date</Text>
+            <Text>{bank.emi_date}</Text>
           </View>
           <View style={[styles.sectionListItem]}>
             <Text>Due Date</Text>
@@ -89,7 +89,7 @@ class CreditCardBillList extends React.Component {
             <Text>{bank.min_due}</Text>
           </View>
           <View style={[styles.sectionListItem]}>
-            <Text>Billed Amount</Text>
+            <Text>Emied Amount</Text>
             <Text>{bank.total_amnt}</Text>
           </View>
         </TouchableOpacity >
@@ -98,9 +98,9 @@ class CreditCardBillList extends React.Component {
   }
 
   render() {
-    let allcardbills = this.props.card_bill_list;
+    let allcardemis = this.props.card_emi_list;
 
-    if (typeof allcardbills === "undefined") {
+    if (typeof allcardemis === "undefined") {
       return (
         <View>
           <Text>Error fetching in card list.</Text>
@@ -143,14 +143,14 @@ class CreditCardBillList extends React.Component {
         <ScrollView>
           <Button
             block
-            title="Add Credit Card Bill"
-            onPress={() => this.props.navigation.navigate("AddCCBill")}
+            title="Add Credit Card Emi"
+            onPress={() => this.props.navigation.navigate("AddCCEmi")}
             success
           ></Button>
 
           <SafeAreaView style={[styles.containerList]}>
             <SectionList
-              sections={allcardbills}
+              sections={allcardemis}
               keyExtractor={(item, index) => item + index}
               //    renderItem={({ item }) => <Items bank={item} />}
               renderItem={({section: { bank }, item }) => {
@@ -168,14 +168,14 @@ class CreditCardBillList extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  card_bill_list: makeSelectCardBillList(),
-  loading: makeSelectCardBillApiLoading()
+  card_emi_list: makeSelectCardEmiList(),
+  loading: makeSelectCardEmiApiLoading()
 });
 const mapDispatchToProps = {
-  dispatchGetCardBill: () => getCardBill(),
+  dispatchGetCardEmi: () => getCardEmi(),
   dispatchGetUserAllCards: () => getCurrentUserCCCards(),
 };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreditCardBillList);
+)(CreditCardEmiList);

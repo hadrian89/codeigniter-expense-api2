@@ -1,20 +1,20 @@
 import request from "../../utils/request";
 import { call, put, select, takeEvery } from "redux-saga/effects";
 import {
-  GET_CARD_BILL_LIST,
-  ADD_NEW_CARD_BILL,
-  UPDATE_CARD_BILL,
-  REMOVE_CARD_BILL,
+  GET_CARD_EMI_LIST,
+  ADD_NEW_CARD_EMI,
+  UPDATE_CARD_EMI,
+  REMOVE_CARD_EMI,
   GET_USER_ALL_CARDS,
   GET_CARD_DETAIL
 } from "./constants";
 import {
-  getCardBillSuccess,
-  getCardBillFailed,
-  addCardBillSuccess,
-  addCardBillFailed,
-  removeCardBillSuccess,
-  removeCardBillFailed,
+  getCardEmiSuccess,
+  getCardEmiFailed,
+  addCardEmiSuccess,
+  addCardEmiFailed,
+  removeCardEmiSuccess,
+  removeCardEmiFailed,
   getCurrentUserCCCardSucess,
   getCurrentUserCCCardError,
   getCardDetailSuccess,
@@ -25,7 +25,7 @@ import { makeSelectToken, makeSelectUserId } from "../Login/selectors";
 
 import { API_URL } from '../../utils/constants';
 
-function* fetchCardBillList() {
+function* fetchCardEmiList() {
   const token = yield select(makeSelectToken());
   const userid = yield select(makeSelectUserId());
 
@@ -47,13 +47,13 @@ function* fetchCardBillList() {
   try {
     // Call our request helper (see 'utils/request')
     const resp = yield call(request, requestURL, headers);
-    yield put(getCardBillSuccess(resp));
+    yield put(getCardEmiSuccess(resp));
   } catch (err) {
-    yield put(getCardBillFailed(err));
+    yield put(getCardEmiFailed(err));
   }
 }
 
-function* addCardBill(prm) {
+function* addCardEmi(prm) {
   const token = yield select(makeSelectToken());
   const userid = yield select(makeSelectUserId());
 
@@ -61,11 +61,11 @@ function* addCardBill(prm) {
 
   const params = {
     userid: userid,
-    bill_amount: prm.formdata.form_bill_amount,
-    bill_bank: prm.formdata.bill_bank,
-    bill_date: prm.formdata.form_bill_date,
-    bill_due_date: prm.formdata.form_bill_due_date,
-    bill_min_due: prm.formdata.form_bill_min_due,
+    emi_amount: prm.formdata.form_emi_amount,
+    emi_bank: prm.formdata.emi_bank,
+    emi_date: prm.formdata.form_emi_date,
+    emi_due_date: prm.formdata.form_emi_due_date,
+    emi_min_due: prm.formdata.form_emi_min_due,
   };
 
   const tokens = "Bearer ".concat(token);
@@ -81,25 +81,25 @@ function* addCardBill(prm) {
   try {
     // Call our request helper (see 'utils/request')
     const resp = yield call(request, requestURL, headers);
-    yield put(addCardBillSuccess("New Card Added"));
+    yield put(addCardEmiSuccess("New Card Added"));
   } catch (err) {
-    yield put(addCardBillFailed(err));
+    yield put(addCardEmiFailed(err));
   }
 }
 
-function* updateCardBill(prm) {
+function* updateCardEmi(prm) {
   const token = yield select(makeSelectToken());
   const userid = yield select(makeSelectUserId());
   
   const requestURL = "http://localhost:3000/post_card_bill";//API_URL + "/api/CreditCard/updatecard";
   const params = {
-    billid: prm.billid,
+    emiid: prm.emiid,
     userid: userid,
-    bill_amount: prm.formdata.form_bill_amount,
-    bill_bank: prm.formdata.bill_bank,
-    bill_date: prm.formdata.form_bill_date,
-    bill_due_date: prm.formdata.form_bill_due_date,
-    bill_min_due: prm.formdata.form_bill_min_due,
+    emi_amount: prm.formdata.form_emi_amount,
+    emi_bank: prm.formdata.emi_bank,
+    emi_date: prm.formdata.form_emi_date,
+    emi_due_date: prm.formdata.form_emi_due_date,
+    emi_min_due: prm.formdata.form_emi_min_due,
   };
 
   const tokens = "Bearer ".concat(token);
@@ -115,19 +115,19 @@ function* updateCardBill(prm) {
   try {
     // Call our request helper (see 'utils/request')
     const resp = yield call(request, requestURL, headers);
-    yield put(addCardBillSuccess("Card Updated"));
+    yield put(addCardEmiSuccess("Card Updated"));
   } catch (err) {
-    yield put(addCardBillFailed(err));
+    yield put(addCardEmiFailed(err));
   }
 }
 
-function* removeCardBill(prm) {
+function* removeCardEmi(prm) {
   const token = yield select(makeSelectToken());
   const userid = yield select(makeSelectUserId());
 
   const requestURL ="http://localhost:3000/post_card_bill";// API_URL + "/api/CreditCard/deletecard";
   const params = {
-    billid: prm.billid,
+    emiid: prm.emiid,
     userid: userid
   };
 
@@ -144,9 +144,9 @@ function* removeCardBill(prm) {
   try {
     // Call our request helper (see 'utils/request')
     const resp = yield call(request, requestURL, headers);
-    yield put(removeCardBillSuccess("Card Removed"));
+    yield put(removeCardEmiSuccess("Card Removed"));
   } catch (err) {
-    yield put(removeCardBillFailed(err));
+    yield put(removeCardEmiFailed(err));
   }
 }
 
@@ -208,13 +208,13 @@ function* fetchCardDetail() {
   }
 }
 
-function* creditCardBillSaga() {
-  yield takeEvery(GET_CARD_BILL_LIST, fetchCardBillList);
+function* creditCardEmiSaga() {
+  yield takeEvery(GET_CARD_EMI_LIST, fetchCardEmiList);
   yield takeEvery(GET_USER_ALL_CARDS, fetchUserAllCards);
   yield takeEvery(GET_CARD_DETAIL, fetchCardDetail);
-  yield takeEvery(ADD_NEW_CARD_BILL, addCardBill);
-  yield takeEvery(UPDATE_CARD_BILL, updateCardBill);
-  yield takeEvery(REMOVE_CARD_BILL, removeCardBill);
+  yield takeEvery(ADD_NEW_CARD_EMI, addCardEmi);
+  yield takeEvery(UPDATE_CARD_EMI, updateCardEmi);
+  yield takeEvery(REMOVE_CARD_EMI, removeCardEmi);
 }
 
-export default creditCardBillSaga;
+export default creditCardEmiSaga;

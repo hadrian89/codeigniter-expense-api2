@@ -28,15 +28,15 @@ import {
 
 import {
   getCardDetail,
-  addCardBill,
-  updateCardBill,
-  removeCardBill
+  addCardEmi,
+  updateCardEmi,
+  removeCardEmi
 } from "./actions";
 
 import {
-  makeSelectCardBillSuccessResp,
-  makeSelectCardBillErrorResp,
-  makeSelectCardBillApiLoading,
+  makeSelectCardEmiSuccessResp,
+  makeSelectCardEmiErrorResp,
+  makeSelectCardEmiApiLoading,
   makeSelectUserAllCards,
   makeSelectCardDetails
 } from "./selectors";
@@ -89,30 +89,30 @@ function validate(formProps) {
   let alldata = JSON.parse(JSON.stringify(formProps));
   const errors = {};
 
-  if (!alldata.form_bill_date) {
-    errors.form_bill_date = "Please enter bill date";
+  if (!alldata.form_emi_date) {
+    errors.form_emi_date = "Please enter emi date";
   }
 
-  if (!alldata.form_bill_bank) {
-    errors.form_bill_bank = "Please select bank";
+  if (!alldata.form_emi_bank) {
+    errors.form_emi_bank = "Please select bank";
   }
 
-  if (!alldata.form_bill_amount) {
-    errors.form_bill_amount = "Please enter bill amount";
+  if (!alldata.form_emi_amount) {
+    errors.form_emi_amount = "Please enter emi amount";
   }
-  if (!alldata.form_bill_due_date) {
-    errors.form_bill_due_date = "Please enter due date";
+  if (!alldata.form_emi_due_date) {
+    errors.form_emi_due_date = "Please enter due date";
   }
-  if (!alldata.form_bill_min_due) {
-    errors.form_bill_min_due = "Please enter min amount";
+  if (!alldata.form_emi_min_due) {
+    errors.form_emi_min_due = "Please enter min amount";
   }
 
   return errors;
 }
 
-class AddCreditCardBill extends React.Component {
+class AddCreditCardEmi extends React.Component {
   static navigationOptions = {
-    title: "Add Credit Card Bill"
+    title: "Add Credit Card Emi"
   };
   constructor(props) {
     super(props);
@@ -135,14 +135,14 @@ class AddCreditCardBill extends React.Component {
         } else {
           if (
             this.props.navigation.state.params &&
-            this.props.navigation.state.params.billid
+            this.props.navigation.state.params.emiid
           ) {
-            this.props.dispatchUpdateCardBill(
-              this.props.navigation.state.params.billid.id,
+            this.props.dispatchUpdateCardEmi(
+              this.props.navigation.state.params.emiid.id,
               values
             );
           } else {
-            this.props.addNewCardBill(values);
+            this.props.addNewCardEmi(values);
           }
         }
       });
@@ -183,27 +183,27 @@ class AddCreditCardBill extends React.Component {
   populateValuesInEditMode = () => {
     if (
       this.props.navigation.state.params &&
-      this.props.navigation.state.params.billid
+      this.props.navigation.state.params.emiid
     ) {
       this.props.changeFieldValue(
-        "form_bill_date",
-        this.props.navigation.state.params.billid.bill_date
+        "form_emi_date",
+        this.props.navigation.state.params.emiid.emi_date
       );
       this.props.changeFieldValue(
-        "form_bill_bank",
-        this.props.navigation.state.params.billid.card_id
+        "form_emi_bank",
+        this.props.navigation.state.params.emiid.card_id
       );
       this.props.changeFieldValue(
-        "form_bill_amount",
-        this.props.navigation.state.params.billid.total_amnt
+        "form_emi_amount",
+        this.props.navigation.state.params.emiid.total_amnt
       );
       this.props.changeFieldValue(
-        "form_bill_min_due",
-        this.props.navigation.state.params.billid.min_due
+        "form_emi_min_due",
+        this.props.navigation.state.params.emiid.min_due
       );
       this.props.changeFieldValue(
-        "form_bill_due_date",
-        this.props.navigation.state.params.billid.due_date
+        "form_emi_due_date",
+        this.props.navigation.state.params.emiid.due_date
       );
     }
   };
@@ -225,19 +225,19 @@ class AddCreditCardBill extends React.Component {
       this.props.carddetail
     ) {
       this.props.changeFieldValue(
-        "form_bill_due_date",
+        "form_emi_due_date",
         this.props.carddetail.due_date
       );
     }
   }
 
-  removeCardBill = () => {
+  removeCardEmi = () => {
     if (
       this.props.navigation.state.params &&
-      this.props.navigation.state.params.billid
+      this.props.navigation.state.params.emiid
     ) {
-      this.props.dispatchRemoveCardBill(
-        this.props.navigation.state.params.billid.id
+      this.props.dispatchRemoveCardEmi(
+        this.props.navigation.state.params.emiid.id
       );
     }
   };
@@ -252,14 +252,14 @@ class AddCreditCardBill extends React.Component {
     let removeHtml;
     if (
       this.props.navigation.state.params &&
-      this.props.navigation.state.params.billid
+      this.props.navigation.state.params.emiid
     ) {
       //removeHtml= <Ionicons name="md-remove-circle"  onPress={() => this.removeCard()} size={32} color="red" />
       removeHtml = (
         <Button
           block
           title="Remove this Card"
-          onPress={() => this.removeCardBill()}
+          onPress={() => this.removeCardEmi()}
           buttonStyle={[{ backgroundColor: "red" }]}
           style={[styles.buttonDanger]}
         ></Button>
@@ -281,7 +281,7 @@ class AddCreditCardBill extends React.Component {
 
             <View style={[styles.inputItem]}>
               <Field
-                name="form_bill_bank"
+                name="form_emi_bank"
                 component={renderPicker}
                 mode="dropdown"
                 onChange={this.onBankCardChange}
@@ -309,8 +309,8 @@ class AddCreditCardBill extends React.Component {
             <View style={[styles.inputItem]}>
               <Field
                 component={renderInput}
-                name="form_bill_date"
-                placeholder="Enter Bill Date"
+                name="form_emi_date"
+                placeholder="Enter Emi Date"
                 type="number"
                 keyboardType="numeric"
                 style={[styles.input]}
@@ -320,8 +320,8 @@ class AddCreditCardBill extends React.Component {
             <View style={[styles.inputItem]}>
               <Field
                 component={renderInput}
-                name="form_bill_amount"
-                placeholder="Total Bill Amount"
+                name="form_emi_amount"
+                placeholder="Total Emi Amount"
                 type="number"
                 keyboardType="numeric"
                 style={[styles.input]}
@@ -330,7 +330,7 @@ class AddCreditCardBill extends React.Component {
             <View style={[styles.inputItem]}>
               <Field
                 component={renderInput}
-                name="form_bill_min_due"
+                name="form_emi_min_due"
                 placeholder="Minimum Due Amount"
                 type="number"
                 keyboardType="numeric"
@@ -340,7 +340,7 @@ class AddCreditCardBill extends React.Component {
             <View style={[styles.inputItem]}>
               <Field
                 component={renderInput}
-                name="form_bill_due_date"
+                name="form_emi_due_date"
                 placeholder="Due Date"
                 type="number"
                 keyboardType="numeric"
@@ -368,49 +368,49 @@ class AddCreditCardBill extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  success: makeSelectCardBillSuccessResp(),
-  error: makeSelectCardBillErrorResp(),
+  success: makeSelectCardEmiSuccessResp(),
+  error: makeSelectCardEmiErrorResp(),
   cards: makeSelectUserAllCards(),
-  loading: makeSelectCardBillApiLoading(),
+  loading: makeSelectCardEmiApiLoading(),
   carddetail: makeSelectCardDetails()
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
     dispatchCardDetail: val => dispatch(getCardDetail(val)),
-    addNewCardBill: val => dispatch(addCardBill(val)),
-    dispatchUpdateCardBill: (id, val) => dispatch(updateCardBill(id, val)),
-    dispatchRemoveCardBill: id => dispatch(removeCardBill(id)),
+    addNewCardEmi: val => dispatch(addCardEmi(val)),
+    dispatchUpdateCardEmi: (id, val) => dispatch(updateCardEmi(id, val)),
+    dispatchRemoveCardEmi: id => dispatch(removeCardEmi(id)),
     changeFieldValue: function(field, value) {
       dispatch(change(form, field, value));
     }
   };
 }
 
-const form = "creditCardBillForm";
+const form = "creditCardEmiForm";
 
-AddCreditCardBill = reduxForm({
+AddCreditCardEmi = reduxForm({
   form,
   touchOnBlur: false,
   touchOnChange: false
-})(AddCreditCardBill);
+})(AddCreditCardEmi);
 
 const selector = formValueSelector(form);
-AddCreditCardBill = connect(state => {
-  const form_bill_date = selector(state, "form_bill_date");
-  const form_bill_bank = selector(state, "form_bill_bank");
-  const form_bill_amount = selector(state, "form_bill_amount");
-  const form_bill_min_due = selector(state, "form_bill_min_due");
-  const form_bill_due_date = selector(state, "form_bill_due_date");
+AddCreditCardEmi = connect(state => {
+  const form_emi_date = selector(state, "form_emi_date");
+  const form_emi_bank = selector(state, "form_emi_bank");
+  const form_emi_amount = selector(state, "form_emi_amount");
+  const form_emi_min_due = selector(state, "form_emi_min_due");
+  const form_emi_due_date = selector(state, "form_emi_due_date");
   return {
-    form_bill_date,
-    form_bill_bank,
-    form_bill_amount,
-    form_bill_min_due,
-    form_bill_due_date
+    form_emi_date,
+    form_emi_bank,
+    form_emi_amount,
+    form_emi_min_due,
+    form_emi_due_date
   };
-})(AddCreditCardBill);
+})(AddCreditCardEmi);
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddCreditCardBill);
+)(AddCreditCardEmi);
