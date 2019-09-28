@@ -3,6 +3,7 @@ import loginReducer from "./Containers/Login/reducers";
 import registerReducer from "./Containers/Registration/reducers";
 import dashboardReducer from "./Containers/Dashboard/reducers";
 import creditcardReducer from "./Containers/CreditCard/reducers";
+import incomeReducer from "./Containers/Income/reducers";
 import creditcardBillReducer from "./Containers/CreditCardBill/reducers";
 import creditcardEmiReducer from "./Containers/CreditCardEmi/reducers";
 import updateProfileReducer from "./Containers/Profile/reducers";
@@ -19,6 +20,7 @@ const sagaMiddleware = createSagaMiddleware();
 const rootReducer = combineReducers({
   dashboard: dashboardReducer,
   creditcard: creditcardReducer,
+  income: incomeReducer,
   creditcardbill: creditcardBillReducer,
   creditcardemi: creditcardEmiReducer,
   login: loginReducer,

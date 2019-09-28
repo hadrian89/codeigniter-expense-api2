@@ -9,13 +9,14 @@ import {
 import { fromJS } from "immutable";
 
 export const initialState = fromJS({
-  token: false,
   error: false,
-  username: false,
-  password: false,
-  userid: false,
-  userdetail: false,
-  loading:false
+  loading:false,
+  success:false,
+  response:false,
+  income_loading:false,
+  cards_loading:false,
+  emi_loading:false,
+  bill_loading:false,
 });
 
 const dashboardReducer = (state = initialState, action) => {

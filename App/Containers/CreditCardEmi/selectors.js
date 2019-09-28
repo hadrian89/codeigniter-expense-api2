@@ -18,7 +18,7 @@ const makeSelectUserAllCards = () =>
     creditCardEmiState => creditCardEmiState.cards
   );
 
-const makeSelectCardDetails = () =>
+const makeSelectCardEmiDetails = () =>
   createSelector(
     selectCreditCardEmi,
     creditCardEmiState => creditCardEmiState.carddetail
@@ -47,5 +47,5 @@ export {
   makeSelectCardEmiErrorResp,
   makeSelectCardEmiApiLoading,
   makeSelectUserAllCards,
-  makeSelectCardDetails
+  makeSelectCardEmiDetails
 };

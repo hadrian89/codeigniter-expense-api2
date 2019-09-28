@@ -18,8 +18,11 @@ const remote = require("../../../assets/images/login-bg.jpg");
 import styles from "../../style";
 
 import { createStructuredSelector } from "reselect";
-import { getCardEmi,getCurrentUserCCCards } from "./actions";
-import { makeSelectCardEmiList, makeSelectCardEmiApiLoading } from "./selectors";
+import { getCardEmi } from "./actions";
+import {
+  makeSelectCardEmiList,
+  makeSelectCardEmiApiLoading
+} from "./selectors";
 
 class CreditCardEmiList extends React.Component {
   static navigationOptions = {
@@ -35,8 +38,8 @@ class CreditCardEmiList extends React.Component {
     this.editCardEmi = this.editCardEmi.bind(this);
   }
   componentDidMount() {
-    this.props.dispatchGetCardEmi();
-    this.props.dispatchGetUserAllCards();
+    // this.props.dispatchGetCardEmi();
+    // this.props.dispatchGetUserAllCards();
   }
 
   componentWillReceiveProps(prevProps) {
@@ -52,47 +55,50 @@ class CreditCardEmiList extends React.Component {
     }
   }
 
-  editCardEmi(id,bank) {
-    
+  editCardEmi(id, bank) {
     let allcardemis = this.props.card_emi_list;
     let carddetail = [];
     if (typeof allcardemis !== "undefined") {
       if (allcardemis.length > 0) {
         allcardemis.map(function(v, k) {
-          if (v['bank'] === bank) {
-            v['data'].map(function(r,s){
-                if(r.id === id){
-                  carddetail = r;
-                }
-            })
+          if (v["bank"] === bank) {
+            v["data"].map(function(r, s) {
+              if (r.id === id) {
+                carddetail = r;
+              }
+            });
           }
         });
       }
     }
-    this.props.navigation.navigate("AddCCEmi", { emiid: carddetail });
+    this.props.navigation.navigate("AddEMI", { emiid: carddetail });
   }
 
-  renderRow(bank,bank_name) {
+  renderRow(bank, bank_name) {
     return (
       <View>
-        <TouchableOpacity  style={[styles.sectionListRow]} button onPress={() => this.editCardEmi(bank.id,bank_name)}>
+        <TouchableOpacity
+          style={[styles.sectionListRow]}
+          button
+          onPress={() => this.editCardEmi(bank.id, bank_name)}
+        >
           <View style={[styles.sectionListItem]}>
-            <Text>Emi Date</Text>
-            <Text>{bank.emi_date}</Text>
+            <Text>Emi For</Text>
+            <Text>{bank.description}</Text>
           </View>
           <View style={[styles.sectionListItem]}>
-            <Text>Due Date</Text>
-            <Text>{bank.due_date}</Text>
+            <Text>Principle Amount</Text>
+            <Text>{bank.principal_amnt}</Text>
           </View>
           <View style={[styles.sectionListItem]}>
-            <Text>Min. Due</Text>
-            <Text>{bank.min_due}</Text>
+            <Text>Monthly EMI</Text>
+            <Text>{bank.emi_amnt}</Text>
           </View>
           <View style={[styles.sectionListItem]}>
-            <Text>Emied Amount</Text>
-            <Text>{bank.total_amnt}</Text>
+            <Text>Booked Date</Text>
+            <Text>{bank.booked_date}</Text>
           </View>
-        </TouchableOpacity >
+        </TouchableOpacity>
       </View>
     );
   }
@@ -144,7 +150,7 @@ class CreditCardEmiList extends React.Component {
           <Button
             block
             title="Add Credit Card Emi"
-            onPress={() => this.props.navigation.navigate("AddCCEmi")}
+            onPress={() => this.props.navigation.navigate("AddEMI")}
             success
           ></Button>
 
@@ -153,8 +159,8 @@ class CreditCardEmiList extends React.Component {
               sections={allcardemis}
               keyExtractor={(item, index) => item + index}
               //    renderItem={({ item }) => <Items bank={item} />}
-              renderItem={({section: { bank }, item }) => {
-                return this.renderRow(item,bank);
+              renderItem={({ section: { bank }, item }) => {
+                return this.renderRow(item, bank);
               }}
               renderSectionHeader={({ section: { bank } }) => (
                 <Text style={[styles.sectionListHeader]}>{bank}</Text>
@@ -173,7 +179,7 @@ const mapStateToProps = createStructuredSelector({
 });
 const mapDispatchToProps = {
   dispatchGetCardEmi: () => getCardEmi(),
-  dispatchGetUserAllCards: () => getCurrentUserCCCards(),
+  //dispatchGetUserAllCards: () => getCurrentUserCCCards()
 };
 export default connect(
   mapStateToProps,

@@ -1,31 +1,31 @@
 import request from "../../utils/request";
 import {
-  GET_CARD_LIST,
-  ADD_NEW_CARD,
-  UPDATE_CARD,
-  REMOVE_CARD
-} from "../CreditCard/constants";
+  GET_INCOME_LIST,
+  ADD_NEW_INCOME,
+  UPDATE_INCOME,
+  REMOVE_INCOME
+} from "../Income/constants";
 
 import { call, put, select, takeEvery } from "redux-saga/effects";
 
 import {
-  getCardSuccess,
-  getCardFailed,
-  addCardSuccess,
-  addCardFailed,
-  removeCardSuccess,
-  removeCardFailed
-} from "../CreditCard/actions";
+  getIncomeSuccess,
+  getIncomeFailed,
+  addIncomeSuccess,
+  addIncomeFailed,
+  removeIncomeSuccess,
+  removeIncomeFailed
+} from "../Income/actions";
 
 import { makeSelectToken, makeSelectUserId } from "../Login/selectors";
 
 const API_URL = "http://weblybox.com/ci-rest-jwt";
 
-function* fetchCardList() {
+function* fetchIncomeList() {
   const token = yield select(makeSelectToken());
   const userid = yield select(makeSelectUserId());
 
-  const requestURL = "http://localhost:3000/get_all_cards";//API_URL + "/api/CreditCard/getcard";
+  const requestURL = "http://localhost:3000/post_income";//API_URL + "/api/Income/getincome";
   const params = {
     userid: userid
   };
@@ -43,22 +43,22 @@ function* fetchCardList() {
   try {
     // Call our request helper (see 'utils/request')
     const resp = yield call(request, requestURL, headers);
-    yield put(getCardSuccess(resp));
+    yield put(getIncomeSuccess(resp));
   } catch (err) {
-    yield put(getCardFailed(err));
+    yield put(getIncomeFailed(err));
   }
 }
 
-function* addCard(prm) {
+function* addIncome(prm) {
   const token = yield select(makeSelectToken());
   const userid = yield select(makeSelectUserId());
 
-  const requestURL = API_URL + "/api/CreditCard/addcard";
+  const requestURL = API_URL + "/api/Income/addincome";
   const params = {
     userid: userid,
     bank_name: prm.formdata.form_cc_bank,
-    card_number: prm.formdata.form_cc_no,
-    credit_limit: prm.formdata.form_cc_limit,
+    income_number: prm.formdata.form_cc_no,
+    income_limit: prm.formdata.form_cc_limit,
     available_limit: prm.formdata.form_cc_available_limit,
     status: "1"
   };
@@ -76,23 +76,23 @@ function* addCard(prm) {
   try {
     // Call our request helper (see 'utils/request')
     const resp = yield call(request, requestURL, headers);
-    yield put(addCardSuccess("New Card Added"));
+    yield put(addIncomeSuccess("New Income Added"));
   } catch (err) {
-    yield put(addCardFailed(err));
+    yield put(addIncomeFailed(err));
   }
 }
 
-function* updateCard(prm) {
+function* updateIncome(prm) {
   const token = yield select(makeSelectToken());
   const userid = yield select(makeSelectUserId());
 
-  const requestURL = API_URL + "/api/CreditCard/updatecard";
+  const requestURL = API_URL + "/api/Income/updateincome";
   const params = {
-    cardid: prm.cardid,
+    incomeid: prm.incomeid,
     userid: userid,
     bank_name: prm.formdata.form_cc_bank,
-    card_number: prm.formdata.form_cc_no,
-    credit_limit: prm.formdata.form_cc_limit,
+    income_number: prm.formdata.form_cc_no,
+    income_limit: prm.formdata.form_cc_limit,
     available_limit: prm.formdata.form_cc_available_limit,
     status: "1"
   };
@@ -110,19 +110,19 @@ function* updateCard(prm) {
   try {
     // Call our request helper (see 'utils/request')
     const resp = yield call(request, requestURL, headers);
-    yield put(addCardSuccess("Card Updated"));
+    yield put(addIncomeSuccess("Income Updated"));
   } catch (err) {
-    yield put(addCardFailed(err));
+    yield put(addIncomeFailed(err));
   }
 }
 
-function* removeCard(prm) {
+function* removeIncome(prm) {
   const token = yield select(makeSelectToken());
   const userid = yield select(makeSelectUserId());
 
-  const requestURL = API_URL + "/api/CreditCard/deletecard";
+  const requestURL = API_URL + "/api/Income/deleteincome";
   const params = {
-    cardid: prm.cardid,
+    incomeid: prm.incomeid,
     userid: userid
   };
 
@@ -139,17 +139,17 @@ function* removeCard(prm) {
   try {
     // Call our request helper (see 'utils/request')
     const resp = yield call(request, requestURL, headers);
-    yield put(removeCardSuccess("Card Removed"));
+    yield put(removeIncomeSuccess("Income Removed"));
   } catch (err) {
-    yield put(removeCardFailed(err));
+    yield put(removeIncomeFailed(err));
   }
 }
 
-function* creditCardSaga() {
-  yield takeEvery(GET_CARD_LIST, fetchCardList);
-  yield takeEvery(ADD_NEW_CARD, addCard);
-  yield takeEvery(UPDATE_CARD, updateCard);
-  yield takeEvery(REMOVE_CARD, removeCard);
+function* incomeSaga() {
+  yield takeEvery(GET_INCOME_LIST, fetchIncomeList);
+  yield takeEvery(ADD_NEW_INCOME, addIncome);
+  yield takeEvery(UPDATE_INCOME, updateIncome);
+  yield takeEvery(REMOVE_INCOME, removeIncome);
 }
 
-export default creditCardSaga;
+export default incomeSaga;

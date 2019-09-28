@@ -32,13 +32,16 @@ import {
   updateCardEmi,
   removeCardEmi
 } from "./actions";
+import {
+  makeSelectCardList
+} from "../CreditCard/selectors";
 
 import {
   makeSelectCardEmiSuccessResp,
   makeSelectCardEmiErrorResp,
   makeSelectCardEmiApiLoading,
   makeSelectUserAllCards,
-  makeSelectCardDetails
+  makeSelectCardEmiDetails
 } from "./selectors";
 
 const renderInput = ({
@@ -103,8 +106,17 @@ function validate(formProps) {
   if (!alldata.form_emi_due_date) {
     errors.form_emi_due_date = "Please enter due date";
   }
-  if (!alldata.form_emi_min_due) {
-    errors.form_emi_min_due = "Please enter min amount";
+  if (!alldata.form_emi_principle_amount) {
+    errors.form_emi_principle_amount = "Please enter principle amount";
+  }
+  if (!alldata.form_emi_description) {
+    errors.form_emi_description = "Please enter EMI for";
+  }
+  if (!alldata.form_emi_tenure) {
+    errors.form_emi_tenure = "Please enter EMI tensure";
+  }
+  if (!alldata.form_emi_outstanding_amount) {
+    errors.form_emi_outstanding_amount = "Please enter outstanding EMI amount";
   }
 
   return errors;
@@ -150,7 +162,7 @@ class AddCreditCardEmi extends React.Component {
     return false;
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.formatCards();
   }
 
@@ -185,9 +197,10 @@ class AddCreditCardEmi extends React.Component {
       this.props.navigation.state.params &&
       this.props.navigation.state.params.emiid
     ) {
+      console.log(this.props.navigation.state.params.emiid)
       this.props.changeFieldValue(
         "form_emi_date",
-        this.props.navigation.state.params.emiid.emi_date
+        this.props.navigation.state.params.emiid.booked_date
       );
       this.props.changeFieldValue(
         "form_emi_bank",
@@ -195,35 +208,44 @@ class AddCreditCardEmi extends React.Component {
       );
       this.props.changeFieldValue(
         "form_emi_amount",
-        this.props.navigation.state.params.emiid.total_amnt
+        this.props.navigation.state.params.emiid.emi_amnt
       );
       this.props.changeFieldValue(
-        "form_emi_min_due",
-        this.props.navigation.state.params.emiid.min_due
+        "form_emi_principle_amount",
+        this.props.navigation.state.params.emiid.principal_amnt
+      );
+      this.props.changeFieldValue(
+        "form_emi_description",
+        this.props.navigation.state.params.emiid.description
+      );
+      this.props.changeFieldValue(
+        "form_emi_tenure",
+        this.props.navigation.state.params.emiid.tenure
+      );
+      this.props.changeFieldValue(
+        "form_emi_outstanding_amount",
+        this.props.navigation.state.params.emiid.outstanding_principle
       );
       this.props.changeFieldValue(
         "form_emi_due_date",
         this.props.navigation.state.params.emiid.due_date
       );
+     // this.onBankCardChange(this.props.navigation.state.params.emiid.card_id)
     }
   };
 
   componentDidUpdate(prevProps) {
-    // if (prevProps.cards != this.props.cards && this.props.cards) {
-    //   this.formatCards();
-    // }
+    if (prevProps.cards != this.props.cards && this.props.cards && this.state.cardOptions.length ===0) {
+      this.formatCards();
+    }
     if (prevProps.success != this.props.success && this.props.success) {
-      this.props.navigation.navigate("CreditCardList", { reload: true });
+      this.props.navigation.navigate("CreditCardEmi", { reload: true });
     }
 
     // if (prevProps.error != this.props.error && this.props.error) {
     //   console.log(this.props.error, "this.props.error");
     // }
-
-    if (
-      prevProps.carddetail !== this.props.carddetail &&
-      this.props.carddetail
-    ) {
+    if (prevProps.carddetail !== this.props.carddetail && this.props.carddetail) {
       this.props.changeFieldValue(
         "form_emi_due_date",
         this.props.carddetail.due_date
@@ -248,7 +270,6 @@ class AddCreditCardEmi extends React.Component {
 
   render() {
     const { handleSubmit, loading } = this.props;
-
     let removeHtml;
     if (
       this.props.navigation.state.params &&
@@ -310,7 +331,7 @@ class AddCreditCardEmi extends React.Component {
               <Field
                 component={renderInput}
                 name="form_emi_date"
-                placeholder="Enter Emi Date"
+                placeholder="Enter EMI Date"
                 type="number"
                 keyboardType="numeric"
                 style={[styles.input]}
@@ -321,7 +342,7 @@ class AddCreditCardEmi extends React.Component {
               <Field
                 component={renderInput}
                 name="form_emi_amount"
-                placeholder="Total Emi Amount"
+                placeholder="EMI Amount"
                 type="number"
                 keyboardType="numeric"
                 style={[styles.input]}
@@ -330,8 +351,38 @@ class AddCreditCardEmi extends React.Component {
             <View style={[styles.inputItem]}>
               <Field
                 component={renderInput}
-                name="form_emi_min_due"
-                placeholder="Minimum Due Amount"
+                name="form_emi_principle_amount"
+                placeholder="Principle Amount"
+                type="number"
+                keyboardType="numeric"
+                style={[styles.input]}
+              />
+            </View>
+            <View style={[styles.inputItem]}>
+              <Field
+                component={renderInput}
+                name="form_emi_description"
+                placeholder="EMI For"
+                type="number"
+                keyboardType="numeric"
+                style={[styles.input]}
+              />
+            </View>
+            <View style={[styles.inputItem]}>
+              <Field
+                component={renderInput}
+                name="form_emi_tenure"
+                placeholder="EMI Tenure"
+                type="number"
+                keyboardType="numeric"
+                style={[styles.input]}
+              />
+            </View>
+            <View style={[styles.inputItem]}>
+              <Field
+                component={renderInput}
+                name="form_emi_outstanding_amount"
+                placeholder="Outstanding Amount"
                 type="number"
                 keyboardType="numeric"
                 style={[styles.input]}
@@ -370,9 +421,9 @@ class AddCreditCardEmi extends React.Component {
 const mapStateToProps = createStructuredSelector({
   success: makeSelectCardEmiSuccessResp(),
   error: makeSelectCardEmiErrorResp(),
-  cards: makeSelectUserAllCards(),
+  cards: makeSelectCardList(),
   loading: makeSelectCardEmiApiLoading(),
-  carddetail: makeSelectCardDetails()
+  carddetail: makeSelectCardEmiDetails()
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -400,13 +451,13 @@ AddCreditCardEmi = connect(state => {
   const form_emi_date = selector(state, "form_emi_date");
   const form_emi_bank = selector(state, "form_emi_bank");
   const form_emi_amount = selector(state, "form_emi_amount");
-  const form_emi_min_due = selector(state, "form_emi_min_due");
+  const form_emi_principle_amount = selector(state, "form_emi_principle_amount");
   const form_emi_due_date = selector(state, "form_emi_due_date");
   return {
     form_emi_date,
     form_emi_bank,
     form_emi_amount,
-    form_emi_min_due,
+    form_emi_principle_amount,
     form_emi_due_date
   };
 })(AddCreditCardEmi);

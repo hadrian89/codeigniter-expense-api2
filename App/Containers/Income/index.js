@@ -16,24 +16,24 @@ import styles from "../../style";
 
 import { ListItem } from "react-native-elements";
 import { createStructuredSelector } from "reselect";
-import { getCard } from "./actions";
-import { makeSelectCardList, makeSelectCardApiLoading } from "./selectors";
+import { getIncome } from "./actions";
+import { makeSelectIncomeList, makeSelectIncomeApiLoading } from "./selectors";
 
-class CreditCardList extends React.Component {
+class Income extends React.Component {
   static navigationOptions = {
-    title: "Credit Card List"
+    title: "Income List"
   };
 
   constructor() {
     super();
     this.state = {
       isLoading: true,
-      notFound: "Card not found.\nPlease click (Add card) button to add it."
+      notFound: "Income not found.\nPlease click (Add income) button to add it."
     };
-    this.editCard = this.editCard.bind(this);
+    this.editIncome = this.editIncome.bind(this);
   }
   componentDidMount() {
-    //this.props.dispatchGetCard();
+  //  this.props.dispatchGetIncome();
   }
 
   componentWillReceiveProps(prevProps) {
@@ -44,52 +44,52 @@ class CreditCardList extends React.Component {
         prevProps.navigation.state.params &&
         prevProps.navigation.state.params.reload
       ) {
-        this.props.dispatchGetCard();
+        this.props.dispatchGetIncome();
       }
     }
   }
 
-  editCard(id) {
-    let allcards = this.props.card_list;
-    let carddetail = [];
-    if (typeof allcards !== "undefined") {
-      if (allcards.length > 0) {
-        allcards.map(function(v, k) {
+  editIncome(id) {
+    let allincomes = this.props.income_list;
+    let incomedetail = [];
+    if (typeof allincomes !== "undefined") {
+      if (allincomes.length > 0) {
+        allincomes.map(function(v, k) {
           if (v.id === id) {
-            carddetail = v;
+            incomedetail = v;
           }
         });
       }
     }
-    this.props.navigation.navigate("CreditCardForm", { cardid: carddetail });
+    this.props.navigation.navigate("IncomeForm", { incomeid: incomedetail });
   }
 
-  render() {
-    let cards_image = [];
-    let allcards = this.props.card_list;
 
-    if (typeof allcards === "undefined") {
+  render() {
+    let incomes_image = [];
+    let allincomes = this.props.income_list;
+    if (typeof allincomes === "undefined") {
       return (
         <View>
-          <Text>Error fetching in card list.</Text>
+          <Text>Error fetching in income list.</Text>
           <Button
             block
             title="Go to Dashboard"
             onPress={() => this.props.navigation.navigate("Dashboard")}
             success
           >
-            <Text> Add Credit Cards </Text>
+            <Text> Add Incomes </Text>
           </Button>
         </View>
       );
     } else {
-      if (allcards.length > 0) {
-        allcards.map(function(v, k) {
-          cards_image.push({
+      if (allincomes.length > 0) {
+        allincomes.map(function(v, k) {
+          incomes_image.push({
             id: v.id,
-            name: v.bank_name + " (" + v.card_number + ")",
+            name: v.salary_date,
            // avatar_url: require("../../../assets/images/" .concat(v.bank_name.toLowerCase()).concat(".jpg")),
-            subtitle: "Limit Left: " + v.credit_limit
+            subtitle: "Salary Inhand: " + v.net_income
           });
         });
       }
@@ -124,13 +124,13 @@ class CreditCardList extends React.Component {
         <ScrollView>
           <Button
             block
-            title="Add Credit Card"
-            onPress={() => this.props.navigation.navigate("CreditCardForm")}
+            title="Add Income"
+            onPress={() => this.props.navigation.navigate("IncomeForm")}
             success
           >
-            <Text> Add Credit Cards </Text>
+            <Text> Add Incomes </Text>
           </Button>
-          {cards_image.map((l, i) => (
+          {incomes_image.map((l, i) => (
             <ListItem
               key={i}
               title={l.name}
@@ -138,7 +138,7 @@ class CreditCardList extends React.Component {
               subtitle={l.subtitle}
               bottomDivider
               button
-              onPress={() => this.editCard(l.id)}
+              onPress={() => this.editIncome(l.id)}
               Component={SafeTouchableHighlight}
             />
           ))}
@@ -149,13 +149,13 @@ class CreditCardList extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  card_list: makeSelectCardList(),
-  loading: makeSelectCardApiLoading()
+  income_list: makeSelectIncomeList(),
+  loading: makeSelectIncomeApiLoading()
 });
 const mapDispatchToProps = {
-  dispatchGetCard: () => getCard()
+  dispatchGetIncome: () => getIncome()
 };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreditCardList);
+)(Income);

@@ -20,9 +20,32 @@ import CCBillForm from "../CreditCardBill/form";
 import CreditCardList from "../CreditCard/index";
 import CreditCardForm from "../CreditCard/form";
 
+import IncomeList from "../Income/index";
+import IncomeForm from "../Income/form";
+
 const config = Platform.select({
   web: { headerMode: "screen" }
 });
+
+const IncomeStack = createStackNavigator(
+  {
+    Income: IncomeList,
+    AddIncome:IncomeForm
+  },
+  config
+);
+
+IncomeStack.navigationOptions = {
+  tabBarLabel: "Income",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? "ios-link" : "calculator"}
+    />
+  )
+};
+
+IncomeStack.path = "";
 
 const CCBillStack = createStackNavigator(
   {
@@ -129,6 +152,7 @@ DashboardStack.path = "";
 
 const tabNavigator = createBottomTabNavigator({
   DashboardStack,
+  IncomeStack,
   //SavingsStack,
   EMIStack,
   CCBillStack,

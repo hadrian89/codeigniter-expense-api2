@@ -8,6 +8,7 @@ import creditCardSaga from "../App/Containers/CreditCard/saga";
 import creditCardBillSaga from "../App/Containers/CreditCardBill/saga";
 import creditCardEmiSaga from "../App/Containers/CreditCardEmi/saga";
 import profileSaga from "../App/Containers/Profile/saga";
+import incomeSaga from "../App/Containers/Income/saga";
 
 //Redux Saga: Root Saga
 export function* rootSaga() {
@@ -17,6 +18,7 @@ export function* rootSaga() {
     fork(creditCardSaga),
     fork(profileSaga),
     fork(creditCardBillSaga),
+    fork(incomeSaga),
     fork(creditCardEmiSaga)
   ]);
 }

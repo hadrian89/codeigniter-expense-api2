@@ -16,6 +16,27 @@ export default StyleSheet.create({
     fontSize: 22,
     color: "white"
   },
+  monthPicker: {
+    alignItems: "center",
+    alignSelf: "stretch",
+    width: "100%",
+    
+    backgroundColor: "#000000",
+  },
+  monthDisplay:{
+    padding:13,
+    textAlign: 'center', // <-- the magic
+    fontWeight: 'bold',
+    fontSize: 18,
+    width: "100%",
+    backgroundColor: 'aliceblue',
+  },
+  leftRightMonthIcon:{
+    width: "20%",
+    height: 50,
+    textAlign: 'center', 
+    backgroundColor: "rgb(33,150,243)"
+  },
   sectionListRow: {
     flex: 1,
     alignSelf: "stretch",

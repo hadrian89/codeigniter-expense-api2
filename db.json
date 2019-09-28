@@ -16,6 +16,24 @@
     "lastname": "srivastav",
     "pan": "HFGFH5757F"
   },
+  "post_income": [
+    {
+      "id": "1",
+      "user_id": "1",
+      "net_income": "60000",
+      "food_coupons": "2000",
+      "other_income": "1000",
+      "salary_date": "01-01-2019"
+    },
+    {
+      "id": "2",
+      "user_id": "1",
+      "net_income": "60000",
+      "food_coupons": "2000",
+      "other_income": "1000",
+      "salary_date": "01-02-2019"
+    }
+  ],
   "get_all_cards": [
     {
       "id": "1",
@@ -124,6 +142,57 @@
           "finance_charge": "676",
           "credit_limit": "100000",
           "available_credit_limit": "61000"
+        }
+      ]
+    }
+  ],
+  "post_card_emi": [
+    {
+      "bank": "HSBC",
+      "data": [
+        {
+          "id": "1",
+          "card_id": "1",
+          "card_bank": "HSBC",
+          "description": "car loan",
+          "principal_amnt": "640000",
+          "emi_amnt": "10771",
+          "tenure": "84",
+          "booked_date": "30-05-2019",
+          "due_date": "31-05-2019",
+          "outstanding_principle": "620000",
+          "loan_number": "HAS87876678687687"
+        },
+        {
+          "id": "2",
+          "card_id": "1",
+          "card_bank": "HSBC",
+          "description": "mobile loan",
+          "principal_amnt": "640000",
+          "emi_amnt": "10771",
+          "tenure": "84",
+          "booked_date": "30-05-2019",
+          "due_date": "31-05-2019",
+          "outstanding_principle": "620000",
+          "loan_number": "HAS87876678687687"
+        }
+      ]
+    },
+    {
+      "bank": "SBI",
+      "data": [
+        {
+          "id": "3",
+          "card_id": "2",
+          "card_bank": "SBI",
+          "description": "home loan",
+          "principal_amnt": "640000",
+          "emi_amnt": "10771",
+          "tenure": "84",
+          "booked_date": "30-05-2019",
+          "due_date": "31-05-2019",
+          "outstanding_principle": "620000",
+          "loan_number": "HAS87876678687687"
         }
       ]
     }

@@ -29,7 +29,7 @@ function* fetchCardEmiList() {
   const token = yield select(makeSelectToken());
   const userid = yield select(makeSelectUserId());
 
-  const requestURL = "http://localhost:3000/post_card_bill";//  API_URL + "/api/CreditCard/getcard";
+  const requestURL = "http://localhost:3000/post_card_emi";//  API_URL + "/api/CreditCard/getcard";
   const params = {
     userid: userid
   };
@@ -58,14 +58,16 @@ function* addCardEmi(prm) {
   const userid = yield select(makeSelectUserId());
 
   const requestURL = "http://localhost:3000/post_card_bill";//API_URL + "/api/CreditCard/addcard";
-
   const params = {
     userid: userid,
     emi_amount: prm.formdata.form_emi_amount,
-    emi_bank: prm.formdata.emi_bank,
+    emi_bank: prm.formdata.form_emi_bank,
     emi_date: prm.formdata.form_emi_date,
     emi_due_date: prm.formdata.form_emi_due_date,
-    emi_min_due: prm.formdata.form_emi_min_due,
+    emi_description: prm.formdata.form_emi_description,
+    emi_outstanding_amount: prm.formdata.form_emi_outstanding_amount,
+    emi_principle_amount: prm.formdata.form_emi_principle_amount,
+    emi_tenure: prm.formdata.form_emi_tenure,
   };
 
   const tokens = "Bearer ".concat(token);
@@ -96,10 +98,13 @@ function* updateCardEmi(prm) {
     emiid: prm.emiid,
     userid: userid,
     emi_amount: prm.formdata.form_emi_amount,
-    emi_bank: prm.formdata.emi_bank,
+    emi_bank: prm.formdata.form_emi_bank,
     emi_date: prm.formdata.form_emi_date,
     emi_due_date: prm.formdata.form_emi_due_date,
-    emi_min_due: prm.formdata.form_emi_min_due,
+    emi_description: prm.formdata.form_emi_description,
+    emi_outstanding_amount: prm.formdata.form_emi_outstanding_amount,
+    emi_principle_amount: prm.formdata.form_emi_principle_amount,
+    emi_tenure: prm.formdata.form_emi_tenure,
   };
 
   const tokens = "Bearer ".concat(token);

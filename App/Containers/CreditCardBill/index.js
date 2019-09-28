@@ -18,7 +18,7 @@ const remote = require("../../../assets/images/login-bg.jpg");
 import styles from "../../style";
 
 import { createStructuredSelector } from "reselect";
-import { getCardBill,getCurrentUserCCCards } from "./actions";
+import { getCardBill } from "./actions";
 import { makeSelectCardBillList, makeSelectCardBillApiLoading } from "./selectors";
 
 class CreditCardBillList extends React.Component {
@@ -35,8 +35,8 @@ class CreditCardBillList extends React.Component {
     this.editCardBill = this.editCardBill.bind(this);
   }
   componentDidMount() {
-    this.props.dispatchGetCardBill();
-    this.props.dispatchGetUserAllCards();
+    // this.props.dispatchGetCardBill();
+    // this.props.dispatchGetUserAllCards();
   }
 
   componentWillReceiveProps(prevProps) {
@@ -173,7 +173,7 @@ const mapStateToProps = createStructuredSelector({
 });
 const mapDispatchToProps = {
   dispatchGetCardBill: () => getCardBill(),
-  dispatchGetUserAllCards: () => getCurrentUserCCCards(),
+  //dispatchGetUserAllCards: () => getCurrentUserCCCards(),
 };
 export default connect(
   mapStateToProps,

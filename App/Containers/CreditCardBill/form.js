@@ -34,6 +34,10 @@ import {
 } from "./actions";
 
 import {
+  makeSelectCardList
+} from "../CreditCard/selectors";
+
+import {
   makeSelectCardBillSuccessResp,
   makeSelectCardBillErrorResp,
   makeSelectCardBillApiLoading,
@@ -370,7 +374,7 @@ class AddCreditCardBill extends React.Component {
 const mapStateToProps = createStructuredSelector({
   success: makeSelectCardBillSuccessResp(),
   error: makeSelectCardBillErrorResp(),
-  cards: makeSelectUserAllCards(),
+  cards: makeSelectCardList(),
   loading: makeSelectCardBillApiLoading(),
   carddetail: makeSelectCardDetails()
 });
